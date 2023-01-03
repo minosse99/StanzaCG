@@ -1,7 +1,7 @@
 
 import { MeshLoader } from "./MeshLoader.js";
 
-import { Camera, setCameraControls, getUpdateCamera } from "./Camera.js";
+import { Camera, setCameraControls, getUpdateCamera ,getanimateCamera} from "./Camera.js";
 
 // WebGL context
 let glMainScreen;
@@ -15,6 +15,7 @@ let actCamera;
 let meshlist = [];
 
 let listPrograms = [];
+let trasparenzaPareti = [false , false,false];
 
 
 // TODO: Evaluate if this is the best way to do this
@@ -96,6 +97,50 @@ export class Core {
 
 }
 
+document.getElementById("cx").addEventListener("change", (e) => {
+	if(document.getElementById("cx").checked){
+		trasparenzaPareti[0] = true;
+	}else{
+		trasparenzaPareti[0] = false;
+	}
+	
+});
+
+document.getElementById("dx").addEventListener("change", (e) => {
+	if(document.getElementById("dx").checked){
+		trasparenzaPareti[1] = true;
+	}else{
+		trasparenzaPareti[1] = false;
+	}
+});
+
+
+document.getElementById("sx").addEventListener("change", (e) => {
+	if(document.getElementById("sx").checked){
+		trasparenzaPareti[2] = true;
+	}else{
+		trasparenzaPareti[2] = false;
+	}
+});
+document.getElementById("radius").addEventListener("input", (e) => {
+	console.log(cameraMainScreen.getRadius());
+	cameraMainScreen.setRadius(e.target.value);
+		
+});
+
+
+document.getElementById("theta").addEventListener("input", (e) => {
+	//console.log(cameraMainScreen.getTheta());
+	cameraMainScreen.setTheta(e.target.value);
+		
+});
+document.getElementById("phi").addEventListener("input", (e) => {
+	//console.log(cameraMainScreen.getRadius());
+	cameraMainScreen.setPhi(e.target.value);
+		
+});
+
+
 export function initProgramRender() {
 	// setup GLSL program
 	let mainProgram = webglUtils.createProgramFromScripts(glMainScreen, [
@@ -103,10 +148,15 @@ export function initProgramRender() {
 		"3d-fragment-shader",
 	]);
 
-	
 
+	glMainScreen.enable(glMainScreen.BLEND);
+
+    glMainScreen.blendFunc(glMainScreen.SRC_ALPHA, glMainScreen.ONE_MINUS_SRC_ALPHA);
+	glMainScreen.enable(glMainScreen.DEPTH_TEST);	
 	glMainScreen.useProgram(mainProgram);
-	glMainScreen.enable(glMainScreen.DEPTH_TEST);
+	
+	
+    
 	// List of list of programs
 	listPrograms = [[mainProgram, glMainScreen]];
 
@@ -122,14 +172,11 @@ export function render(time = 0) {
 	
 	for (const program of listPrograms) {
 				
-		if (getUpdateCamera()) cameraMainScreen.moveCamera();
+		if (getUpdateCamera() || getanimateCamera()) cameraMainScreen.moveCamera();
 		
 		// Convert to seconds
 		time *= 0.002;
-		document.getElementById("moveCameraX").addEventListener("input", function (e) {
-			
-		});
-	
+		
 		meshlist.forEach((elem) => {
 			elem.render(
 				time,
@@ -137,7 +184,8 @@ export function render(time = 0) {
 				{ ambientLight: [0.2, 0.2, 0.2], colorLight: [1.0, 1.0, 1.0] },
 				program[0],
 				actCamera,
-				isMainScreen
+				isMainScreen,
+				trasparenzaPareti
 			);			
 		}
 		);

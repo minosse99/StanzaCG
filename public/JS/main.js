@@ -16,12 +16,12 @@ let sceneComposition = new Scene();
 //		-	Points
 
 var listOfObject = 
-["pareteCx","scimmia",
-"mensola","pareteDx",
-"pareteSx","Pavimento",
+["scimmia",
+"mensola","Pavimento",
 "tavolo","sediaDX",
 "sediaAx","sediaBx",
-"sediaLx","tv","divano","lampada"];
+"sediaLx","tv","divano","pareteDx",
+"pareteSx","pareteCx"];
 
 sceneComposition.addElement(listOfObject);
 

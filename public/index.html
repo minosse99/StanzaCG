@@ -28,8 +28,37 @@
 						AA.2021/22 Department of Information Engineering and Computer Science.
 					</div>
 					<br>
-					<input type="range" id="moveCameraX"min="-10" max="10" step="1" defaultValue="0">
-					
+					<div>
+						<label for="Radius">Radius</label>
+						<input type="range" name="Radius" id="radius"min="10" max="100" step="1" defaultValue="50">
+					</div>
+					<div>
+						<label for="Phi">Phi</label>
+						<input type="range" name="Phi" id="phi"min="-5" max="5" step="0.01" defaultValue="0">
+					</div>
+					<div>
+						<label for="Theta">Theta</label>
+						<input type="range" name="Theta" id="theta" min="-5" max="5" step="0.02" defaultValue="0">
+					</div>
+					<div>
+						<fieldset>
+							<legend>Trasparenza</legend>
+						
+							<div>
+							  <input type="checkbox" id="cx" name="Parete Cx">
+							  <label for="Parete Cx">Parete Cx</label>
+							</div>
+						
+							<div>
+							  <input type="checkbox" id="dx" name="Parete Dx">
+							  <label for="Parete Dx">Parete Dx</label>
+							</div>
+
+							<div>
+								<input type="checkbox" id="sx" name="Parete Sx">
+								<label for="Parete Sx">Parete Sx</label>
+							  </div>
+						</fieldset>
 			</div>
 </body>
 
@@ -75,6 +104,7 @@
 	uniform vec3 u_ambientLight;
 	uniform vec3 u_colorLight;
 	uniform sampler2D diffuseMap;
+	uniform float uAlpha;
 
 	void main () {
 		vec3 normal = normalize(v_normal);
@@ -94,7 +124,7 @@
 			ambient * u_ambientLight +
 			effectiveDiffuse * fakeLight +
 			specular * pow(specularLight, shininess),
-			effectiveOpacity);
+			uAlpha * effectiveOpacity);
 	}
 </script>
 

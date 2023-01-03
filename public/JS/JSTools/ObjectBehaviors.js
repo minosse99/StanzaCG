@@ -64,7 +64,7 @@ export class ObjectBehaviors {
 		this.playerListener.delta.z = 0;
 	}
 
-	render(time, gl, light, program, camera, isScreen) {
+	render(time, gl, light, program, camera, isScreen,trasparenzaPareti) {
 
 		/********************************************************************************************/
 
@@ -116,6 +116,11 @@ export class ObjectBehaviors {
 			this.mesh.shininess
 		);
 		gl.uniform1f(gl.getUniformLocation(program, "opacity"), this.mesh.opacity);
+		
+		if((this.alias === "pareteCx" && trasparenzaPareti[0]) || (this.alias === "pareteDx" && trasparenzaPareti[1]) ||  (this.alias === "pareteSx" && trasparenzaPareti[2]) ){
+			gl.uniform1f(gl.getUniformLocation(program, "uAlpha"), 0.2);
+		}else
+			gl.uniform1f(gl.getUniformLocation(program, "uAlpha"), 1.0);
 		gl.enableVertexAttribArray(positionLocation);
 		gl.bindBuffer(gl.ARRAY_BUFFER, this.positionBuffer);
 		const size = 3; // 3 components per iteration
