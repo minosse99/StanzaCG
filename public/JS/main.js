@@ -9,21 +9,75 @@ console.log("main.js - Start loading scene elements");
 let sceneComposition = new Scene();
 // Counter for the number of objects that have to be added to the scene
 
-// Add objects to the scene:
-//		-	Arena
-//		-	Player
-//		-	Enemies
-//		-	Points
 
-var listOfObject = 
-["scimmia",
-"mensola","Pavimento",
-"tavolo","sediaDX",
-"sediaAx","sediaBx",
-"sediaLx","tv","divano","pareteDx",
-"pareteSx","pareteCx"];
-
-sceneComposition.addElement(listOfObject);
+sceneComposition.sceneObj.push( {
+    alias: "scimmia",
+    pathOBJ: "./OBJModels/scimmia.obj",
+    coords: { x: 2, y: 11, z: 7 }
+});
+sceneComposition.sceneObj.push( {
+    alias: "lampada",
+    pathOBJ: "./OBJModels/lampada.obj",
+    coords: { x: 0, y: 0, z: 0 }
+});
+sceneComposition.sceneObj.push( {
+    alias: 'mensola',
+    pathOBJ: "./OBJModels/mensola.obj",
+    coords: { x: 0, y: 0, z: 0 }
+});
+sceneComposition.sceneObj.push( {
+    alias: "Pavimento",
+    pathOBJ: "./OBJModels/Pavimento.obj",
+    coords: { x: 0, y: 0, z: 0 }
+});
+sceneComposition.sceneObj.push( {
+    alias: "sediaAx",
+    pathOBJ: "./OBJModels/sediaAx.obj",
+    coords: { x: 0, y: 0, z: 0 }
+});
+sceneComposition.sceneObj.push( {
+    alias: "sediaDX",
+    pathOBJ: "./OBJModels/sediaDX.obj",
+    coords: { x: 0, y: 0, z: 0 }
+});
+sceneComposition.sceneObj.push( {
+    alias: "sediaBx",
+    pathOBJ: "./OBJModels/sediaBx.obj",
+    coords: { x: 0, y: 0, z: 0 }
+});
+sceneComposition.sceneObj.push( {
+    alias: "sediaLX",
+    pathOBJ: "./OBJModels/sediaLX.obj",
+    coords: { x: 0, y: 0, z: 0 }
+});
+sceneComposition.sceneObj.push( {
+    alias: "tavolo",
+    pathOBJ: "./OBJModels/tavolo.obj",
+    coords: { x: 0, y: 0, z: 0 }
+});
+sceneComposition.sceneObj.push( {
+    alias: "tv",
+    pathOBJ: "./OBJModels/tv.obj",
+    coords: { x: 12, y: 4, z: 6 }
+});
+sceneComposition.sceneObj.push( {
+    alias: "divano",
+    pathOBJ: "./OBJModels/divano.obj",
+    coords: { x: 0, y: 0, z: 0 }
+});
+sceneComposition.sceneObj.push( {
+    alias: "pareteSx",
+    pathOBJ: "./OBJModels/pareteSx.obj",
+    coords: { x: 0, y: 0, z: 0 }
+});sceneComposition.sceneObj.push( {
+    alias: "pareteDx",
+    pathOBJ: "./OBJModels/pareteDx.obj",
+    coords: { x: 0, y:0 , z: 0 }
+});sceneComposition.sceneObj.push( {
+    alias: "pareteCx",
+    pathOBJ: "./OBJModels/pareteCx.obj",
+    coords: { x: 0, y: 0, z: 0 }
+});
 
 console.debug(sceneComposition);
 

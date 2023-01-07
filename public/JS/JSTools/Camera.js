@@ -6,7 +6,7 @@ let THETA = degToRad(260), //ANGLE X
 	PHI = degToRad(20);		//ANGLE Y
 let old_x, old_y;
 let dX, dY;
-
+let lookAt = false;
 //
 let animateCamera = false;
 let maxRadius = 360,
@@ -28,7 +28,11 @@ export class Camera {
 		this.up = up;
 		this.target = target;
 		this.fieldOfView = fieldOfView;
-		this.radius = 50;
+		this.radius = 35;
+		
+		this.forward = m4.normalize(m4.subtractVectors(target, position));
+        this.right = m4.normalize(m4.cross(this.forward, up));
+       // this.up = m4.normalize(m4.cross(this.right, this.forward));
 	}	
 
 	radiusModify(radius) {
@@ -43,6 +47,69 @@ export class Camera {
 		this.position[2] = Math.sin(PHI) * this.radius;
 		updateCamera = false;
 	}
+
+	 // Ruota la visuale di una telecamera in alto o in basso.
+    // Puoi inclinare verso l'alto o verso il basso.
+    tilt(step){
+        let rotation = m4.axisRotation(this.right, (step / 2));
+        this.forward = m4.transformPoint(rotation, this.forward)
+        this.up = m4.transformPoint(rotation, this.up)
+
+        this.forward = m4.normalize(this.forward);
+        this.up = m4.normalize(this.up)
+    }
+
+	align(){
+        this.up=[0,1,0];
+        this.forward[0] = 0;
+        this.right = m4.normalize(m4.cross(this.forward, this.up));
+    }
+
+    // Ruota la visuale della telecamera orizzontalmente rispetto alla posizione dell'occhio della telecamera
+    // È possibile eseguire una panoramica a sinistra o una panoramica a destra.
+    pan(step){
+        let rotation = m4.axisRotation(this.up, step);
+        this.forward = m4.transformPoint(rotation,this.forward);
+        this.right = m4.transformPoint(rotation,this.right);
+
+        this.forward = m4.normalize(this.forward);
+        this.right = m4.normalize(this.right);
+    }
+
+    // Inclina una telecamera lateralmente mantenendone la posizione e la direzione di visualizzazione.
+    cant(step){
+        let rotation = m4.axisRotation(this.forward, (step / 2));
+        this.right = m4.transformPoint(rotation, this.right)
+        this.up = m4.transformPoint(rotation, this.up)
+
+        this.right = m4.normalize(this.right);
+        this.up = m4.normalize(this.up);
+    }
+
+    // Sposta la posizione di una telecamera lateralmente (sinistra o destra) mentre la direzione della visuale della telecamera è invariata.
+    // Puoi spostarti verso sinistra o verso destra.
+    truck(dist){
+        this.position[0] += + (this.right[0] * dist);
+        this.position[1] += + (this.right[1] * dist);
+        this.position[2] += + (this.right[2] * dist);
+    }
+
+    // Alza o abbassa una telecamera sul suo supporto.
+    // Puoi alzare il piedistallo e abbassare il piedistallo.
+    pedestal(dist){
+        this.position[0] += (this.up[0] * dist);
+        this.position[1] += (this.up[1] * dist);
+        this.position[2] += (this.up[2] * dist);
+    }
+
+    // Sposta una telecamera più vicino o più lontano dalla posizione che sta guardando.
+    // Puoi entrare e uscire.
+    dolly(dist){
+        this.position[0] += (this.forward[0] * dist);
+        this.position[1] += (this.forward[1] * dist);
+        this.position[2] += (this.forward[2] * dist);
+    }
+
 
 	getRadius () {
 		return this.radius;
@@ -78,14 +145,16 @@ export class Camera {
 		updateCamera = true;
 	}
 
-	// Compute the camera's matrix using look at.
-	cameraMatrix() {
-		return m4.lookAt(this.position, this.target, this.up);
-	}
 
 	// Make a view matrix from the camera matrix.
 	viewMatrix() {
-		return m4.inverse(this.cameraMatrix());
+		const look = m4.addVectors(this.position, this.forward);
+		let cameraMatrix;
+		if(lookAt || animateCamera)
+        	cameraMatrix = m4.lookAt(this.position, this.target, this.up);
+		else
+			cameraMatrix = m4.lookAt(this.position, look, this.up);
+        return m4.inverse(cameraMatrix); // ViewMatrix
 	}
 
 	// Compute the projection matrix
@@ -93,7 +162,14 @@ export class Camera {
 		let aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
 		return m4.perspective(this.fieldOfView, aspect, 1, 2000);
 	}
-
+	setLookAt(coords){
+		console.log(coords)
+		lookAt = true;
+		this.target =[ coords.x , coords.y , coords.z];
+	}
+	disableLookAt(){
+		lookAt = false;
+	}
 	
 }
 
@@ -105,18 +181,83 @@ export function getUpdateCamera() {
 	return updateCamera;
 }
 
-export function setCameraControls(canvas, isActive) {
-	//window.addEventListener("keydown", onKeyDown, true);
+export function setCameraControls(canvas,camera,l) {
+	
+	lookAt = l;
 	
 	window.addEventListener("keydown", function (e){
-		if(e.key === 'r'){
-			if(animateCamera === false)
+		let step = 0.1;
+		switch (e.key){
+			case "r":{
+			if(animateCamera === false){
+				//camera.getOriginalPosition();
 				animateCamera = true;
-			else 
+			}else 
 				animateCamera = false;
-			//updateCamera = true;
+			break;}
+		case "w" :{
+			camera.dolly(step);
+			
+			break;
 		}
-	});
+		case "s" : {
+			camera.dolly(-step);
+			break;
+		}
+	case "a": {
+			camera.truck(-step);
+			break;
+		}
+		case "d": {
+			camera.truck(step);
+			break;
+		}
+		case "q": {
+			camera.pedestal(step);
+			break;
+		}
+	case "e": {
+			camera.pedestal(-step);
+			break;
+		}
+		case "g": {
+			camera.cant(-step);
+			break;
+		}
+		case "k": {
+			camera.cant(step);
+			break;
+		}
+		case "u":  {
+			camera.pedestal(step);
+			break;
+		}
+		case "j": {
+			camera.pedestal(-step);
+			break;
+		}
+		case "ArrowUp": {
+			camera.tilt(step);
+			break;
+		}
+		case "ArrowDown": {
+			camera.tilt(-step);
+			break;
+		}
+		case "ArrowLeft": {
+			camera.pan(step );
+			break;
+		}
+		case "ArrowRight": {
+			camera.pan(-step);
+			break;
+		}
+		case "l": {
+			
+
+			break;
+		}
+		}});
 
 	canvas.onmousedown = function (e) {
 		drag = true;
@@ -139,6 +280,8 @@ export function setCameraControls(canvas, isActive) {
 		PHI -= dY;
 		if (PHI > degToRad(85)) PHI = degToRad(85);
 		if (PHI < degToRad(0)) PHI = degToRad(0);
+		camera.pan(dX * 0.5);
+		camera.tilt	(dY * 0.5);
 		old_x = e.pageX;
 		old_y = e.pageY;
 		e.preventDefault();
@@ -177,6 +320,22 @@ export function setCameraControls(canvas, isActive) {
 	canvas.ontouchend = function (touch) {
 		drag = false;
 	};
+
+	canvas.onmousewheel = function (e) {
+		var delta = 0;
+		if (!e) e = window.event;
+		if (e.wheelDelta) {
+			delta = e.wheelDelta / 120;
+		} else if (e.detail) {
+			delta = -e.detail / 3;
+		}
+		if (delta) {
+			camera.dolly(delta * 0.3);
+		}
+		if (e.preventDefault) e.preventDefault();
+		e.returnValue = false;
+};
+
 
 }
 

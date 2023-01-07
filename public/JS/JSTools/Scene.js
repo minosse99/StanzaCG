@@ -28,7 +28,6 @@ export class Scene {
 				pathOBJ: "./OBJModels/" + elem +".obj",
 				coords: { x: 0, y: 0, z: 0 }
 			};
-
 			if (this.sceneObj.push(newObj)) {
 				console.log("Scene.js - Added new object to the scene");
 			} else {
@@ -36,8 +35,6 @@ export class Scene {
 				console.debug(newObj);
 			}
 		});
-			
-		
 	}
 
 	
