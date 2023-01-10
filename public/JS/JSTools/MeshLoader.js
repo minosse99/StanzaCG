@@ -20,9 +20,9 @@ export class MeshLoader {
 	 * @param {String} pathOBJ The path to the .obj file.
 	 * @param {Object} coords An object that contains the coordinates of the object inside the scene.
 	 */
-	addMesh(glMainScreen, alias, pathOBJ, coords) {
+	addMesh(glMainScreen, alias, pathOBJ, coords, rotate) {
 
-		console.log("MeshLoader.js - Loading mesh: " + alias);
+//		console.log("MeshLoader.js - Loading mesh: " + alias);
 
 		// Create the mesh object
 		let mesh = [];
@@ -34,10 +34,10 @@ export class MeshLoader {
 		// Add the mesh to the list of objects
 			
 		this.objData.push(
-			new ObjectBehaviors(alias, mesh, coords));
+			new ObjectBehaviors(alias, mesh, coords, rotate));
 	
 		
-		console.debug("MeshLoader.js - OBJ loaded: " + this.objData[this.objData.length - 1].position.x + ", " + this.objData[this.objData.length - 1].position.y + ", " + this.objData[this.objData.length - 1].position.z);
+		//console.debug("MeshLoader.js - OBJ loaded: " + this.objData[this.objData.length - 1].position.x + ", " + this.objData[this.objData.length - 1].position.y + ", " + this.objData[this.objData.length - 1].position.z);
 		
 		console.log("MeshLoader.js - End loading mesh: " + alias);
 	}

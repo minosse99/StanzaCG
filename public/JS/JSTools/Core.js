@@ -39,7 +39,9 @@ export class Core {
 		glMainScreen = this.glMainScreen;
 		
 		if (!this.glMainScreen) return;
-
+		if (!glMainScreen.getExtension('WEBGL_depth_texture')) {
+			throw new Error('need WEBGL_depth_texture');
+		}
 		// MeshLoader initialization
 		this.meshlist = [];
 		this.meshLoader = new MeshLoader(this.meshlist);
@@ -71,7 +73,8 @@ export class Core {
 				this.glMainScreen,
 				obj.alias,
 				obj.pathOBJ,
-				{x:0,y:0,z:0}
+				{x:0,y:0,z:0},
+				obj.rotate
 			);
 			if(obj.alias === "tv" || obj.alias === "lampada" || obj.alias ==="tavolo" || obj.alias === "scimmia"){
 				listObjectToLook.push(obj);
@@ -92,7 +95,7 @@ export class Core {
 		console.log("Core.js - Start camera setup");
 
 		cameraMainScreen = new Camera(
-			[1, -19, 8],
+			[0, -18, 8],
 			[0, 0 , 1],
 			[0, 0, 1],
 			20
@@ -152,7 +155,6 @@ export function render(time = 0) {
 				{ ambientLight: [0.2, 0.2, 0.2], colorLight: [1.0, 1.0, 1.0] },
 				program[0],
 				actCamera,
-				isMainScreen,
 				trasparenzaPareti
 			);			
 		}
@@ -214,13 +216,11 @@ document.getElementById("radius").addEventListener("input", (e) => {
 });
 
 
-document.getElementById("theta").addEventListener("input", (e) => {
-	//console.log(cameraMainScreen.getTheta());
-	cameraMainScreen.setTheta(e.target.value);
+document.getElementById("theta").addEventListener("change", (e) => {
+	cameraMainScreen.setTheta(e.target.valueAsNumber);
 		
 });
 document.getElementById("phi").addEventListener("input", (e) => {
-	//console.log(cameraMainScreen.getRadius());
-	cameraMainScreen.setPhi(e.target.value);
+	cameraMainScreen.setPhi(e.target.valueAsNumber);
 		
 });

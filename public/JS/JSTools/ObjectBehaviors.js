@@ -5,7 +5,7 @@ let rotMat = m4.multiply(rotMatX, rotMatY);
 
 export class ObjectBehaviors {
 	
-	constructor(alias, mesh, offsets) {
+	constructor(alias, mesh, offsets,rotate) {
 		// Parametri discriminanti dell'OBJ
 		this.alias = alias; // Nominativo dell'OBJ da renderizzare
 		
@@ -16,6 +16,14 @@ export class ObjectBehaviors {
 			y: offsets.y, // Posizione del "centro" dell'OBJ rispetto alla coordinata Y
 			z: offsets.z, // Posizione del "centro" dell'OBJ rispetto alla coordinata Z
 		};
+		this.offdeltaY = 0;
+		//console.log(rotate);
+		this.ampWaveLimiter = 0.004;
+		if (rotate){ // Used for world matrix transformation
+			let rotMatY = m4.yRotation(0.04);
+			this.rotMat = rotMatY;
+			this.rotate = true;
+        }
 		this.compute_position();
 		console.debug(this);
 	}
@@ -31,13 +39,15 @@ export class ObjectBehaviors {
 	// Calcolo della nuova posizione della mesh (mesh.positions e mesh.normals).
 	// TODO: Chiedere al professore perchè rotazione + traslazione portano ad un movimento anomalo.
 	compute_idleAnimation(deltaY) {
+		//m4.translate(this.mesh.position, 2,11,7);
+		this.offdeltaY = deltaY;
 		for (let i = 0; i < this.mesh.positions.length; i += 3) {
 			var pos = [];
 			var nor = [];
 
 			this.mesh.positions[i + 2] += deltaY;
 			pos.push(this.mesh.positions[i + 1] - this.position.x);
-			pos.push(this.mesh.positions[i + 2] - 1 - this.position.y);
+			pos.push(this.mesh.positions[i + 2] - 0.1 - this.position.y);
 			pos.push(this.mesh.positions[i] - this.position.z);
 			nor.push(this.mesh.normals[i + 1]);
 			nor.push(this.mesh.normals[i + 2]);
@@ -47,7 +57,7 @@ export class ObjectBehaviors {
 			var nor_res = m4.transformPoint(rotMat, nor);
 
 			this.mesh.positions[i + 1] = pos_res[0] + this.position.x;
-			this.mesh.positions[i + 2] = pos_res[1] + 1 + this.position.y;
+			this.mesh.positions[i + 2] = pos_res[1] + 0.1 + this.position.y;
 			this.mesh.positions[i] = pos_res[2] + this.position.z;
 			this.mesh.normals[i + 1] = nor_res[0];
 			this.mesh.normals[i + 2] = nor_res[1];
@@ -64,10 +74,42 @@ export class ObjectBehaviors {
 		this.playerListener.delta.z = 0;
 	}
 
-	render(time, gl, light, program, camera, isScreen,trasparenzaPareti) {
+	/*computeIdleAnimation(deltaY){
+		this.offdeltaY = deltaY;
+		for (let i = 0; i < this.mesh.positions.length; i += 3) {
+			var pos = [];
+			var nor = [];
+
+			this.mesh.positions[i + 2] += deltaY;
+
+			pos.push(this.mesh.positions[i + 1] - this.position.x);
+			pos.push(this.mesh.positions[i + 2] - 1 - this.position.y);
+			pos.push(this.mesh.positions[i] - this.position.z);
+
+			nor.push(this.mesh.normals[i + 1]);
+			nor.push(this.mesh.normals[i + 2]);
+			nor.push(this.mesh.normals[i]);
+
+			var pos_res = m4.transformPoint(this.rotMat, pos);
+			var nor_res = m4.transformPoint(this.rotMat, nor);
+
+			this.mesh.positions[i + 1] = pos_res[0] + this.position.x;
+			this.mesh.positions[i + 2] = pos_res[1] + 1 + this.position.y;
+			this.mesh.positions[i] = pos_res[2] + this.position.z;
+
+			this.mesh.normals[i + 1] = nor_res[0];
+			this.mesh.normals[i + 2] = nor_res[1];
+			this.mesh.normals[i] = nor_res[2];
+		}
+	}
+*/
+	render(time, gl, light, program, camera, trasparenzaPareti) {
 
 		/********************************************************************************************/
-
+		if (this.rotate == true  ){
+			this.compute_idleAnimation(Math.sin(time) * this.ampWaveLimiter);
+            
+        }
 		let positionLocation = gl.getAttribLocation(program, "a_position");
 		let normalLocation = gl.getAttribLocation(program, "a_normal");
 		let texcoordLocation = gl.getAttribLocation(program, "a_texcoord");
@@ -92,6 +134,7 @@ export class ObjectBehaviors {
 			new Float32Array(this.mesh.texcoords),
 			gl.STATIC_DRAW
 		);
+		
 		gl.uniform3fv(gl.getUniformLocation(program, "diffuse"), this.mesh.diffuse);
 		gl.uniform3fv(gl.getUniformLocation(program, "ambient"), this.mesh.ambient);
 		gl.uniform3fv(
@@ -190,12 +233,16 @@ export class ObjectBehaviors {
 		gl.uniform1i(textureLocation, 0);
 
 		let vertNumber = this.mesh.numVertices;
+		
 		drawScene(0, this.mesh);
-
+		
+		// compute the world matrix
+       
 		// Draw the scene.
 		function drawScene(time, mesh) {
-			if(isScreen) gl.bindTexture(gl.TEXTURE_2D, mesh.mainTexture);
-            else gl.bindTexture(gl.TEXTURE_2D, mesh.sideTexture);
+			//if(isScreen || rotate) gl.bindTexture(gl.TEXTURE_2D, mesh.mainTexture);
+            //else gl.bindTexture(gl.TEXTURE_2D, mesh.sideTexture);
+			 gl.bindTexture(gl.TEXTURE_2D, mesh.mainTexture);
 			gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
 
 			let matrix = m4.identity();
@@ -204,4 +251,5 @@ export class ObjectBehaviors {
 			gl.drawArrays(gl.TRIANGLES, 0, vertNumber);
 		}
 	}
+	
 }

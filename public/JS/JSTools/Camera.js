@@ -2,8 +2,8 @@ let updateCamera = true;
 // Parametri globali utilizzati all'interno di Camera.js.
 //
 let drag;
-let THETA = degToRad(260), //ANGLE X
-	PHI = degToRad(20);		//ANGLE Y
+let THETA = degToRad(270), //ANGLE X
+	PHI = degToRad(25);		//ANGLE Y
 let old_x, old_y;
 let dX, dY;
 let lookAt = false;
@@ -28,10 +28,11 @@ export class Camera {
 		this.up = up;
 		this.target = target;
 		this.fieldOfView = fieldOfView;
-		this.radius = 35;
+		this.radius = 30;
 		
-		this.forward = m4.normalize(m4.subtractVectors(target, position));
-        this.right = m4.normalize(m4.cross(this.forward, up));
+		this.forward = m4.normalize(m4.subtractVectors(target,position));
+		//this.forward[1]= 0;
+        this.right = m4.normalize(m4.cross(this.forward,up));
        // this.up = m4.normalize(m4.cross(this.right, this.forward));
 	}	
 
@@ -60,7 +61,7 @@ export class Camera {
     }
 
 	align(){
-        this.up=[0,1,0];
+        this.up=[0,0,1];
         this.forward[0] = 0;
         this.right = m4.normalize(m4.cross(this.forward, this.up));
     }
@@ -131,12 +132,12 @@ export class Camera {
 		
 	}
 	setTheta(dim) {
-		THETA =+ dim ;	
+		THETA = degToRad(dim) ;	
 		updateCamera = true;
 	}
 
 	setPhi(dim){
-		PHI =+ dim;
+		PHI = degToRad(dim);
 		updateCamera = true;
 	}
 	
@@ -159,7 +160,7 @@ export class Camera {
 
 	// Compute the projection matrix
 	projectionMatrix(gl) {
-		let aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
+		let aspect = gl.canvas.width / gl.canvas.height;
 		return m4.perspective(this.fieldOfView, aspect, 1, 2000);
 	}
 	setLookAt(coords){
@@ -184,7 +185,6 @@ export function getUpdateCamera() {
 export function setCameraControls(canvas,camera,l) {
 	
 	lookAt = l;
-	
 	window.addEventListener("keydown", function (e){
 		let step = 0.1;
 		switch (e.key){
@@ -253,7 +253,7 @@ export function setCameraControls(canvas,camera,l) {
 			break;
 		}
 		case "l": {
-			
+			camera.align();
 
 			break;
 		}
@@ -280,8 +280,8 @@ export function setCameraControls(canvas,camera,l) {
 		PHI -= dY;
 		if (PHI > degToRad(85)) PHI = degToRad(85);
 		if (PHI < degToRad(0)) PHI = degToRad(0);
-		camera.pan(dX * 0.5);
-		camera.tilt	(dY * 0.5);
+		camera.pan(dX * 0.2);
+		camera.tilt	(dY * 0.2);
 		old_x = e.pageX;
 		old_y = e.pageY;
 		e.preventDefault();
@@ -341,4 +341,8 @@ export function setCameraControls(canvas,camera,l) {
 
 function degToRad(d) {
 	return (d * Math.PI) / 180;
+}
+
+function radTodeg(d){
+	return (d * 180) / Math.PI;
 }
