@@ -15,6 +15,7 @@ export class Scene {
 		this.sceneObj = sceneObj;
 	}
 
+	
 /**
  * 
  * @param {List<String>} name of the objects to be load 

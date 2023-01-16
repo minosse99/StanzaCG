@@ -1,4 +1,4 @@
-# Blender MTL File: 'stanza.blend1'
+# Blender MTL File: 'stanza1.blend'
 # Material Count: 2
 
 newmtl (null)
@@ -20,4 +20,4 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd BOLDRINI_15.jpg
+map_Kd \BOLDRINI_15.jpg

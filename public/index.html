@@ -13,8 +13,8 @@
 <body>
 	<div class="row">
 				<div>
-					<canvas class="column1" id="screenCanvas" width="900"
-						height="700">
+					<canvas class="column1" id="screenCanvas" width="1024px"
+						height="1024px">
 					</canvas>
 				</div>
 		
@@ -28,18 +28,6 @@
 						AA.2021/22 Department of Information Engineering and Computer Science.
 					</div>
 					<br>
-					<div>
-						<label for="Radius">Radius</label>
-						<input type="number" name="Radius" id="radius"min="10" max="100" step="1" value="30">
-					</div>
-					<div>
-						<label for="Phi">Phi</label>
-						<input type="number" name="Phi" id="phi" min="0" max="360"  value="25">
-					</div>
-					<div>
-						<label for="Theta">Theta</label>
-						<input type="number" name="Theta" id="theta" min="0" max="360"  value="270">
-					</div>
 					<div>
 						<fieldset>
 							<legend>Trasparenza</legend>
@@ -74,6 +62,7 @@
 					<div> <input type="checkbox" label="lookAt" id="lookat">
 						<label for="lookat">Punta la telecamera verso il centro</label></div>
 						<select name="LookAt" id="selectLookat" disabled></select>
+						<input type="button" id="switch_camera" name="camera" value="Switch Camera" >
 			</div>
 </body>
 
@@ -98,6 +87,28 @@
 		v_surfaceToView = u_viewWorldPosition - worldPosition.xyz;
 		v_normal = mat3(u_world) * a_normal;
 		v_texcoord = a_texcoord;
+	}
+</script>
+
+<script id="skybox-vertex-shader" type="x-shader/x-vertex">
+	attribute vec4 a_position;
+	varying vec4 v_position;
+	void main() {
+		v_position = a_position;
+		gl_Position = vec4(a_position.xy, 1, 1);
+	}
+</script>
+
+<script id="skybox-fragment-shader" type="x-shader/x-fragment">
+	precision mediump float;
+
+	uniform samplerCube u_skybox;
+	uniform mat4 u_viewDirectionProjectionInverse;
+
+	varying vec4 v_position;
+	void main() {
+		vec4 t = u_viewDirectionProjectionInverse * v_position;
+		gl_FragColor = textureCube(u_skybox, normalize(t.xyz / t.w));
 	}
 </script>
 
@@ -150,7 +161,7 @@
 <script type="text/javascript" src="./JS/JSCourse/mesh_utils.js"></script>
 <script type="text/javascript" src="./JS/JSCourse/webgl-utils.js"></script>
 <script type="text/javascript" src="./JS/JSCourse/load_mesh.js"></script>
-
+<script type="text/javascript" src="./JS/JSCourse/primitives.js"></script>
 <script type="module" src="./JS/main.js"></script>
 
 </html>

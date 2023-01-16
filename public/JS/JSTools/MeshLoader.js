@@ -1,4 +1,4 @@
-import { ObjectBehaviors } from "./ObjectBehaviors.js";
+import { Object } from "./Object.js";
 
 export class MeshLoader {
 
@@ -34,12 +34,8 @@ export class MeshLoader {
 		// Add the mesh to the list of objects
 			
 		this.objData.push(
-			new ObjectBehaviors(alias, mesh, coords, rotate));
+			new Object(alias, mesh, coords, rotate));
 	
-		
-		//console.debug("MeshLoader.js - OBJ loaded: " + this.objData[this.objData.length - 1].position.x + ", " + this.objData[this.objData.length - 1].position.y + ", " + this.objData[this.objData.length - 1].position.z);
-		
-		console.log("MeshLoader.js - End loading mesh: " + alias);
 	}
 
 }

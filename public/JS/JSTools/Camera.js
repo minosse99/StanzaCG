@@ -23,34 +23,16 @@ export class Camera {
 	// fieldOfView, ...
 
 
-	constructor(position, up, target, fieldOfView) {
+	constructor(position,lookAt, up) {
 		this.position = position;
-		this.up = up;
-		this.target = target;
-		this.fieldOfView = fieldOfView;
-		this.radius = 30;
-		
-		this.forward = m4.normalize(m4.subtractVectors(target,position));
-		//this.forward[1]= 0;
-        this.right = m4.normalize(m4.cross(this.forward,up));
-       // this.up = m4.normalize(m4.cross(this.right, this.forward));
+		this.forward = m4.normalize(m4.subtractVectors(lookAt, position));
+        this.right = m4.normalize(m4.cross(this.forward, up));
+        this.up = m4.normalize(m4.cross(this.right, this.forward));
+		this.fieldOfView = 70;
 	}	
 
-	radiusModify(radius) {
-		return radius * Math.cos(PHI);
-	}
-
-	moveCamera() {
-		if (animateCamera) this.animateCamera();
-		//console.log("Camera update");
-		this.position[0] = Math.cos(THETA) * this.radiusModify(this.radius);
-		this.position[1] = Math.sin(THETA) * this.radiusModify(this.radius);
-		this.position[2] = Math.sin(PHI) * this.radius;
-		updateCamera = false;
-	}
-
-	 // Ruota la visuale di una telecamera in alto o in basso.
-    // Puoi inclinare verso l'alto o verso il basso.
+ // Ruota la visuale di una telecamera in alto o in basso.
+ // Puoi inclinare verso l'alto o verso il basso.
     tilt(step){
         let rotation = m4.axisRotation(this.right, (step / 2));
         this.forward = m4.transformPoint(rotation, this.forward)
@@ -58,6 +40,8 @@ export class Camera {
 
         this.forward = m4.normalize(this.forward);
         this.up = m4.normalize(this.up)
+		this.right = m4.normalize(m4.cross(this.forward, this.up));
+		 
     }
 
 	align(){
@@ -116,52 +100,29 @@ export class Camera {
 		return this.radius;
 	}
 	
-	smoothReset() {
-		if (THETA > degToRad(180)) THETA += 0.01;  
-		if (THETA < degToRad(180)) THETA -= 0.01;
-		if (PHI > degToRad(45)) PHI -= 0.01; 
-		if (PHI < degToRad(45)) PHI += 0.01; 
+	setPos(x,y,z){
+		this.position[0] = x;
+		this.position[1] = y;
+		this.position[2] = z;
 	}
-
-	
-	animateCamera() {
-		updateCamera = true;
-		this.smoothReset();
-		//if (THETA > degToRad(179) && THETA < degToRad(181)) THETA = degToRad(180);
-		//if (PHI > degToRad(44) && PHI < degToRad(46)) PHI = degToRad(45);
-		
-	}
-	setTheta(dim) {
-		THETA = degToRad(dim) ;	
-		updateCamera = true;
-	}
-
-	setPhi(dim){
-		PHI = degToRad(dim);
-		updateCamera = true;
-	}
-	
-	setRadius(dim) {
-		this.radius = this.radiusModify(dim);
-		updateCamera = true;
-	}
-
 
 	// Make a view matrix from the camera matrix.
 	viewMatrix() {
 		const look = m4.addVectors(this.position, this.forward);
 		let cameraMatrix;
-		if(lookAt || animateCamera)
+		if(lookAt || animateCamera){
         	cameraMatrix = m4.lookAt(this.position, this.target, this.up);
-		else
+			console.log('lookAt')
+		
+		}	else
 			cameraMatrix = m4.lookAt(this.position, look, this.up);
         return m4.inverse(cameraMatrix); // ViewMatrix
 	}
 
 	// Compute the projection matrix
 	projectionMatrix(gl) {
-		let aspect = gl.canvas.width / gl.canvas.height;
-		return m4.perspective(this.fieldOfView, aspect, 1, 2000);
+		let aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
+		return m4.perspective(this.fieldOfView, aspect, 0.1, 200);
 	}
 	setLookAt(coords){
 		console.log(coords)
@@ -171,33 +132,18 @@ export class Camera {
 	disableLookAt(){
 		lookAt = false;
 	}
-	
+	getPosition(){
+		return this.position;
+	}
 }
 
-export function getanimateCamera() {
-	return animateCamera;
-}
-
-export function getUpdateCamera() {
-	return updateCamera;
-}
-
-export function setCameraControls(canvas,camera,l) {
-	
-	lookAt = l;
+export function setCameraControls(canvas,camera,look) {
+	lookAt = look;
 	window.addEventListener("keydown", function (e){
-		let step = 0.1;
+		let step = 0.2;
 		switch (e.key){
-			case "r":{
-			if(animateCamera === false){
-				//camera.getOriginalPosition();
-				animateCamera = true;
-			}else 
-				animateCamera = false;
-			break;}
 		case "w" :{
 			camera.dolly(step);
-			
 			break;
 		}
 		case "s" : {
@@ -253,8 +199,9 @@ export function setCameraControls(canvas,camera,l) {
 			break;
 		}
 		case "l": {
-			camera.align();
-
+	//		camera.align();
+			console.log(camera.getPosition())
+	
 			break;
 		}
 		}});
@@ -276,8 +223,6 @@ export function setCameraControls(canvas,camera,l) {
 		updateCamera = true;
 		dX = (-(e.pageX - old_x) * 2 * Math.PI) / canvas.width;
 		dY = (-(e.pageY - old_y) * 2 * Math.PI) / canvas.height;
-		THETA += dX;
-		PHI -= dY;
 		if (PHI > degToRad(85)) PHI = degToRad(85);
 		if (PHI < degToRad(0)) PHI = degToRad(0);
 		camera.pan(dX * 0.2);
