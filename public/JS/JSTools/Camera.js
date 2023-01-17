@@ -2,7 +2,7 @@ let updateCamera = true;
 // Parametri globali utilizzati all'interno di Camera.js.
 //
 let drag;
-let THETA = degToRad(270), //ANGLE X
+let THETA = degToRad(270),	//ANGLE X
 	PHI = degToRad(25);		//ANGLE Y
 let old_x, old_y;
 let dX, dY;
@@ -127,7 +127,7 @@ export class Camera {
 	setLookAt(coords){
 		console.log(coords)
 		lookAt = true;
-		this.target =[ coords.x , coords.y , coords.z];
+		this.target =[  coords.y, coords.z, coords.x ];
 	}
 	disableLookAt(){
 		lookAt = false;
@@ -142,68 +142,67 @@ export function setCameraControls(canvas,camera,look) {
 	window.addEventListener("keydown", function (e){
 		let step = 0.2;
 		switch (e.key){
-		case "w" :{
-			camera.dolly(step);
-			break;
-		}
-		case "s" : {
-			camera.dolly(-step);
-			break;
-		}
-	case "a": {
-			camera.truck(-step);
-			break;
-		}
-		case "d": {
-			camera.truck(step);
-			break;
-		}
-		case "q": {
-			camera.pedestal(step);
-			break;
-		}
-	case "e": {
-			camera.pedestal(-step);
-			break;
-		}
-		case "g": {
-			camera.cant(-step);
-			break;
-		}
-		case "k": {
-			camera.cant(step);
-			break;
-		}
-		case "u":  {
-			camera.pedestal(step);
-			break;
-		}
-		case "j": {
-			camera.pedestal(-step);
-			break;
-		}
-		case "ArrowUp": {
-			camera.tilt(step);
-			break;
-		}
-		case "ArrowDown": {
-			camera.tilt(-step);
-			break;
-		}
-		case "ArrowLeft": {
-			camera.pan(step );
-			break;
-		}
-		case "ArrowRight": {
-			camera.pan(-step);
-			break;
-		}
-		case "l": {
-	//		camera.align();
-			console.log(camera.getPosition())
-	
-			break;
-		}
+			case "w" :{
+				camera.dolly(step);
+				break;
+			}
+			case "s" : {
+				camera.dolly(-step);
+				break;
+			}
+			case "a": {
+				camera.truck(-step);
+				break;
+			}
+			case "d": {
+				camera.truck(step);
+				break;
+			}
+			case "q": {
+				camera.pedestal(step);
+				break;
+			}
+			case "e": {
+					camera.pedestal(-step);
+					break;
+				}
+			case "g": {
+				camera.cant(-step);
+				break;
+			}
+			case "k": {
+				camera.cant(step);
+				break;
+			}
+			case "u":  {
+				camera.pedestal(step);
+				break;
+			}
+			case "j": {
+				camera.pedestal(-step);
+				break;
+			}
+			case "ArrowUp": {
+				camera.tilt(step);
+				break;
+			}
+			case "ArrowDown": {
+				camera.tilt(-step);
+				break;
+			}
+			case "ArrowLeft": {
+				camera.pan(step );
+				break;
+			}
+			case "ArrowRight": {
+				camera.pan(-step);
+				break;
+			}
+			case "l": {
+				camera.align();
+				
+				break;
+			}
 		}});
 
 	canvas.onmousedown = function (e) {

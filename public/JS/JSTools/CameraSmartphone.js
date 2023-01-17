@@ -13,15 +13,7 @@ let radius = 50;
 let maxRadius = 360,
 	minRadius = 30;
 
-// Definizione della classe "Camera".
-// A suo interno vi è la completa gestione delle caratteristiche relative
-// alla camera.
 export class CameraSmartphone {
-	// Costruttore della classe "Camera".
-	// position, posizione spaziale (x, y, z) della camera.
-	// up, ...
-	// target, soggetto della scena.
-	// fieldOfView, ...
 
 	constructor(position, up, target, fieldOfView) {
 		this.position = position;
@@ -40,9 +32,6 @@ export class CameraSmartphone {
 		this.position[2] = Math.sin(PHI) * radius;
 		updateCamera = false;
 	}
-
-
-
 
 	// Compute the camera's matrix using look at.
 	cameraMatrix() {

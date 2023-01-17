@@ -1,4 +1,5 @@
 import {Camera} from "./camera.js";
+import {degToRad} from "../utils.js";
 
 export class AnimatedCamera extends Camera{
     constructor() {
@@ -17,15 +18,14 @@ export class AnimatedCamera extends Camera{
 	}
 
     #move(){
-        if (this.THETA > degToRad(270)) this.THETA += 0.001;  
-		if (this.THETA < degToRad(270)) this.THETA -= 0.001;
+        if (this.THETA > degToRad(180)) this.THETA += 0.001;  
+		if (this.THETA < degToRad(180)) this.THETA -= 0.001;
 		if (this.PHI > degToRad(45)) this.PHI -= 0.001; 
 		if (this.PHI < degToRad(45)) this.PHI += 0.001; 
 
-        this.position[0] = Math.cos(this.THETA) * this.radiusModify(this.radius) ;
-		this.position[1] = Math.sin(this.THETA) * this.radiusModify(this.radius);
-		this.position[2] = Math.sin(this.PHI) * this.radius;
-
+        this.position[0] = Math.sin(this.THETA) * this.radiusModify(this.radius);
+		this.position[1] = Math.sin(this.PHI) * this.radius;
+        this.position[2] = Math.cos(this.THETA) * this.radiusModify(this.radius) ;
     }
 
 
@@ -43,8 +43,4 @@ export class AnimatedCamera extends Camera{
 		let cameraMatrix= m4.lookAt(this.position, look, this.up);
         return m4.inverse(cameraMatrix); // ViewMatrix
 	}
-}
-
-function degToRad(d) {
-  return d * Math.PI / 180;
 }

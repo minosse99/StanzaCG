@@ -10,7 +10,7 @@ export class Scene {
 	 * @param {string} name - The name of the scene.
 	 * @param {object} sceneObj - An array of objects that will be rendered in the scene.
 	 */
-	constructor(name = "defaultSceneComposition", sceneObj = []) {
+	constructor(name = "default", sceneObj = []) {
 		this.sceneName;
 		this.sceneObj = sceneObj;
 	}
@@ -26,7 +26,7 @@ export class Scene {
 		listofObjects.forEach(elem => {
 			var newObj = {
 				alias: elem,
-				pathOBJ: "./OBJModels/" + elem +".obj",
+				pathOBJ: "./models/" + elem +".obj",
 				coords: { x: 0, y: 0, z: 0 }
 			};
 			if (this.sceneObj.push(newObj)) {

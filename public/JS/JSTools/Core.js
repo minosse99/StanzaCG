@@ -2,9 +2,10 @@
 import { MeshLoader } from "./MeshLoader.js";
 
 import { Camera, setCameraControls} from "./Camera.js";
-import { degToRad,radToDeg,createXYQuadVertices,prepareSkybox ,drawSkybox,projectionMatrix,isSmartphone} from "../utils.js";
+import { degToRad,radToDeg,createXYQuadVertices,projectionMatrix,isSmartphone} from "./../utils.js";
 import { AnimatedCamera } from "./AnimatedCamera.js";
 import {CameraSmartphone,setCameraControlSmartphone, getUpdateCamera} from "./CameraSmartphone.js";
+
 
 // WebGL context
 let gl;
@@ -14,8 +15,7 @@ let camera;
 // List of objects to render
 let meshlist = [];
 let listPrograms = [];
-let skyBoxProgramInfo;
-var texture;
+var skybox = [];
 let quadBufferInfo;
 let mainCanvas;
 let trasparenzaPareti = [false , false,false];
@@ -38,11 +38,13 @@ export class Core {
 
 		// Canvas and WebGL context initialization
 		this.mainCanvas = document.getElementById(idMainCanvas);
-		this.gl = this.mainCanvas.getContext("webgl2");
+		this.gl = this.mainCanvas.getContext("webgl");
 		// Global variables initialization
 		gl = this.gl;
-		//	gl.getExtension("OES_standard_derivatives");
 		if (!this.gl) return;
+		gl.getExtension("OES_standard_derivatives");
+		this.gl.getExtension('WEBGL_depth_texture');
+		
 		this.meshlist = [];
 		this.meshLoader = new MeshLoader(this.meshlist);
 		// Global variables initialization
@@ -70,81 +72,86 @@ export class Core {
 				this.gl,
 				obj.alias,
 				obj.pathOBJ,
-				{x:0,y:0,z:0},
+				obj.coords,
 				obj.rotate
 			);
-			if(obj.alias === "tv" || obj.alias === "lampada" || obj.alias ==="tavolo" || obj.alias === "scimmia"){
+			if(obj.alias === "tv"  || obj.alias ==="tavolo" ){
+				listObjectToLook.push(obj);
+			}else if(obj.alias === "scimmia"){
+				obj.coords= [2,11,7];
 				listObjectToLook.push(obj);
 			}
 		}
 		document.getElementById('selectLookat').innerHTML = listObjectToLook.map((obj) => `<option value="${obj.alias}">${obj.alias}</option>`).join('');
 
-		console.log("Core.js - End scene setup");
+		
 	}
 
 	
 	async prepareSkybox(){
-		skyBoxProgramInfo = webglUtils.createProgramInfo(gl, ["skybox-vertex-shader", "skybox-fragment-shader"]);
+		if(!isSmartphone(mainCanvas)){
+			console.log("Core.js - Start skybox setup");
+			skybox.programInfo = webglUtils.createProgramInfo(gl, ["skybox-vertex-shader", "skybox-fragment-shader"]);
 
-		const arrays2 = createXYQuadVertices.apply(null,  Array.prototype.slice.call(arguments, 1));
-		quadBufferInfo = webglUtils.createBufferInfoFromArrays(gl, arrays2);
-		// Create a texture.
-		texture = gl.createTexture();
-		gl.bindTexture(gl.TEXTURE_CUBE_MAP, texture);
-	
-		const faceInfos = [
-		{
-			target: gl.TEXTURE_CUBE_MAP_POSITIVE_X,
-			url: './OBJModels/img/skybox/pos-x.jpg',
-		},
-		{
-			target: gl.TEXTURE_CUBE_MAP_NEGATIVE_X,
-			url: './OBJModels/img/skybox/neg-x.jpg',
-		},
-		{
-			target: gl.TEXTURE_CUBE_MAP_POSITIVE_Y,
-			url: './OBJModels/img/skybox/pos-y.jpg',
-		},
-		{
-			target: gl.TEXTURE_CUBE_MAP_NEGATIVE_Y,
-			url: './OBJModels/img/skybox/neg-y.jpg',
-		},
-		{
-			target: gl.TEXTURE_CUBE_MAP_POSITIVE_Z,
-			url: './OBJModels/img/skybox/pos-z.jpg',
-		},
-		{
-			target: gl.TEXTURE_CUBE_MAP_NEGATIVE_Z,
-			url: './OBJModels/img/skybox/neg-z.jpg',
-		},
-		];
-		faceInfos.forEach((faceInfo) => {
-		const {target, url} = faceInfo;
-	
-		// Upload the canvas to the cubemap face.
-		const level = 0;
-		const internalFormat = gl.RGBA;
-		const width = 512;
-		const height = 512;
-		const format = gl.RGBA;
-		const type = gl.UNSIGNED_BYTE;
-	
-		// setup each face so it's immediately renderable
-		gl.texImage2D(target, level, internalFormat, width, height, 0, format, type, null);
-	
-		// Asynchronously load an image
-		const image = new Image();
-		image.src = url;
-		image.addEventListener('load', function() {
-			// Now that the image has loaded make copy it to the texture.
-			gl.bindTexture(gl.TEXTURE_CUBE_MAP, texture);
-			gl.texImage2D(target, level, internalFormat, format, type, image);
+			const arrays2 = createXYQuadVertices.apply(null,  Array.prototype.slice.call(arguments, 1));
+			quadBufferInfo = webglUtils.createBufferInfoFromArrays(gl, arrays2);
+			// Create a texture.
+			skybox.texture = gl.createTexture();
+			gl.bindTexture(gl.TEXTURE_CUBE_MAP, skybox.texture);
+		
+			const faceInfos = [
+			{
+				target: gl.TEXTURE_CUBE_MAP_POSITIVE_X,
+				url: './models/img/posx.jpg',
+			},
+			{
+				target: gl.TEXTURE_CUBE_MAP_NEGATIVE_X,
+				url: './models/img/negx.jpg',
+			},
+			{
+				target: gl.TEXTURE_CUBE_MAP_POSITIVE_Y,
+				url: './models/img/posy.jpg',
+			},
+			{
+				target: gl.TEXTURE_CUBE_MAP_NEGATIVE_Y,
+				url: './models/img/negy.jpg',
+			},
+			{
+				target: gl.TEXTURE_CUBE_MAP_POSITIVE_Z,
+				url: './models/img/negz.jpg',
+			},
+			{
+				target: gl.TEXTURE_CUBE_MAP_NEGATIVE_Z,
+				url: './models/img/posz.jpg',
+			},
+			];
+			faceInfos.forEach((faceInfo) => {
+			const {target, url} = faceInfo;
+		
+			// Upload the canvas to the cubemap face.
+			const level = 0;
+			const internalFormat = gl.RGBA;
+			const width = 512;
+			const height = 512;
+			const format = gl.RGBA;
+			const type = gl.UNSIGNED_BYTE;
+		
+			// setup each face so it's immediately renderable
+			gl.texImage2D(target, level, internalFormat, width, height, 0, format, type, null);
+		
+			// Asynchronously load an image
+			const image = new Image();
+			image.src = url;
+			image.addEventListener('load', function() {
+				// Now that the image has loaded make copy it to the texture.
+				gl.bindTexture(gl.TEXTURE_CUBE_MAP, skybox.texture);
+				gl.texImage2D(target, level, internalFormat, format, type, image);
+				gl.generateMipmap(gl.TEXTURE_CUBE_MAP);
+			});
+			});
 			gl.generateMipmap(gl.TEXTURE_CUBE_MAP);
-		});
-		});
-		gl.generateMipmap(gl.TEXTURE_CUBE_MAP);
-		gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR);
-	
+			gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR);
+		}
 	}
 	/**
 	 * Function that generates the camera for the rendering.
@@ -153,8 +160,8 @@ export class Core {
 	generateCamera() {
 		console.log("Core.js - Start camera setup");
 
-		const position = [-47,7,3], target = [0, 1, 0], up = [0, 1, 0];
-		if(isSmartphone(this.mainCanvas)){
+		const position = [-19,8,5], target = [0, 1, 0], up = [0, 1, 0];
+		if(!isSmartphone(this.mainCanvas)){
 			camera = new Camera(position, target, up);
 			setCameraControls(this.mainCanvas,camera,lookAt);
 		}else{
@@ -169,7 +176,7 @@ export class Core {
 document.getElementById('switch_camera').onclick = function() {
 	const position = [-47,7,3], target = [0, 1, 0], up = [0, 1, 0];
 	if (camera instanceof AnimatedCamera){
-		if(isSmartphone(mainCanvas)){
+		if(!isSmartphone(mainCanvas)){
 			camera = new Camera(position, target, up,70);
 			setCameraControls(mainCanvas,camera,lookAt);
 		}else{
@@ -200,6 +207,7 @@ export function initProgramRender() {
 		let obj = listObjectToLook.find((obj) => obj.alias === select.value);
 		camera.setLookAt(obj.coords);
 	});
+
 	
 }
 
@@ -210,13 +218,11 @@ export function initProgramRender() {
  */
 export function render(time = 0) {
 	time *= 0.002;
-	//gl.enable(gl.DEPTH_TEST);
-	//webglUtils.resizeCanvasToDisplaySize(gl.canvas);
-	//gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+	
 	gl.enable(gl.CULL_FACE);
-   gl.enable(gl.DEPTH_TEST);
-   gl.enable(gl.BLEND);
-   gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+   	gl.enable(gl.DEPTH_TEST);
+   	gl.enable(gl.BLEND);
+   	gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
 
     // Clear the canvas AND the depth buffer.
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
@@ -242,30 +248,31 @@ export function render(time = 0) {
 		
 		
 	}
-	gl.depthFunc(gl.LEQUAL);
-	var projectionMatrix =
-       camera.projectionMatrix(gl);
+	if(!isSmartphone(mainCanvas)){
+		gl.depthFunc(gl.LEQUAL);
+		var projectionMatrix =
+		camera.projectionMatrix(gl);
 
-    var cameraMatrix = camera.viewMatrix();
-    var viewMatrix = cameraMatrix;
-	var viewDirectionMatrix = m4.copy(viewMatrix);
-    viewDirectionMatrix[12] = 0;
-    viewDirectionMatrix[13] = 0;
-    viewDirectionMatrix[14] = 0;
+		var cameraMatrix = camera.viewMatrix();
+		var viewMatrix = cameraMatrix;
+		var viewDirectionMatrix = m4.copy(viewMatrix);
+		viewDirectionMatrix[12] = 0;
+		viewDirectionMatrix[13] = 0;
+		viewDirectionMatrix[14] = 0;
 
-    var viewDirectionProjectionMatrix =
-        m4.multiply(projectionMatrix, viewDirectionMatrix);
-    var viewDirectionProjectionInverseMatrix =
-        m4.inverse(viewDirectionProjectionMatrix);
+		var viewDirectionProjectionMatrix =
+			m4.multiply(projectionMatrix, viewDirectionMatrix);
+		var viewDirectionProjectionInverseMatrix =
+			m4.inverse(viewDirectionProjectionMatrix);
 
-	gl.useProgram(skyBoxProgramInfo.program);
-	webglUtils.setBuffersAndAttributes(gl, skyBoxProgramInfo, quadBufferInfo);
-	webglUtils.setUniforms(skyBoxProgramInfo, {
-		u_viewDirectionProjectionInverse: viewDirectionProjectionInverseMatrix,
-		u_skybox: texture
-	});
-	webglUtils.drawBufferInfo(gl, quadBufferInfo);
-
+		gl.useProgram(skybox.programInfo.program);
+		webglUtils.setBuffersAndAttributes(gl, skybox.programInfo, quadBufferInfo);
+		webglUtils.setUniforms(skybox.programInfo, {
+			u_viewDirectionProjectionInverse: viewDirectionProjectionInverseMatrix,
+			u_skybox: skybox.texture
+		});
+		webglUtils.drawBufferInfo(gl, quadBufferInfo);
+	}
 	requestAnimationFrame(render);
 }
 

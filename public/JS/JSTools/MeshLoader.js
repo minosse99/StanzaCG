@@ -32,7 +32,6 @@ export class MeshLoader {
 		LoadMesh(glMainScreen, mesh);
 
 		// Add the mesh to the list of objects
-			
 		this.objData.push(
 			new Object(alias, mesh, coords, rotate));
 	
