@@ -2,6 +2,8 @@
 import { Scene } from "./JSTools/Scene.js";
 import { Core, initProgramRender, render } from "./JSTools/Core.js";
 
+import { Camera } from "./JSTools/Camera.js";
+
 let sceneComposition = new Scene();
 sceneComposition.sceneObj.push( {
     alias: "scimmia",
@@ -77,6 +79,7 @@ sceneComposition.sceneObj.push( {
 let core = new Core("canvas");
 
 core.setupScene(sceneComposition);
+
 
 core.generateCamera();
 

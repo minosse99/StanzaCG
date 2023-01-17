@@ -10,15 +10,14 @@
 	<title>CG project</title>
 </head>
 
-<body>
-	<div class="row">
-				<div>
-					<canvas class="column1" id="canvas" width="1024px"
-						height="1024px">
+<body class="bg-gradient-to-r from-sky-500 to-indigo-500" >
+	<div class="lg flex justify-center items-center columns-1 flex-col min-[500px]:flex-row">
+				<div class="my-8">
+					<canvas class="rounded-md" id="canvas" width="800" height="600">
 					</canvas>
 				</div>
 		
-				<div class="menu column2">
+				<div class="columns-1 mx-6" >
 					<div class="title">
 						Computer Graphics Project
 					</div>
@@ -29,40 +28,38 @@
 					</div>
 					<br>
 					<div>
-						<fieldset>
+						<fieldset class="flex items-center mb-4" >
 							<legend>Trasparenza</legend>
 						
 							<div>
-							  <input type="checkbox" id="cx" name="Parete Cx">
+							  <input type="checkbox" id="cx" name="Parete Cx" class="mx-4 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
 							  <label for="Parete Cx">Parete Cx</label>
 							</div>
 						
 							<div>
-							  <input type="checkbox" id="dx" name="Parete Dx">
+							  <input type="checkbox" id="dx" name="Parete Dx" class="mx-4 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
 							  <label for="Parete Dx">Parete Dx</label>
 							</div>
 
 							<div>
-								<input type="checkbox" id="sx" name="Parete Sx">
+								<input type="checkbox" id="sx" name="Parete Sx" class="mx-4 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
 								<label for="Parete Sx">Parete Sx</label>
 							  </div>
 						</fieldset>
-						<div>
-							Premi W/S per muoverti in avanti/indietro<br/>
-							Premi A/D per muoverti a sinistra/destra<br/>
-							Premi Q/E per muoverti in alto/basso<br/>
-							Premi G/K per ruotare a destra/sinistra<br/>
-							Premi U/J per ruotare in alto/basso<br/>
-							Premi le frecce per muovere la visuale: alto/basso/sinistra/destra<br/>
-							Premi L per resettare l'inclinazione<br/>
-							Premi il tasto sinistro e trascina il mouse per ruotare la scena<br>
-							Premi la rotellina del mouse per zoomare<br/>
+						<div class="my-2"> <input class="mx-4 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" type="checkbox" label="lookAt" id="lookat">
+							<label for="lookat">Punta la telecamera verso ...</label>
+							<select name="LookAt" id="selectLookat" disabled></select>
+							<br/>	<br/>	<br/>
+							<input type="button"class="px-8 py-3 font-semibold rounded-full dark:bg-gray-100 dark:text-gray-800"
+							id="switch_camera" name="camera" value="Animate Camera" >
+							</div>
 						</div>
-					<div> <input type="checkbox" label="lookAt" id="lookat">
-						<label for="lookat">Punta la telecamera verso il centro</label></div>
-						<select name="LookAt" id="selectLookat" disabled></select>
-						<input type="button" id="switch_camera" name="camera" value="Switch Camera" >
-			</div>
+						<div>
+							<canvas id="canvas2DText" class="canvas2d" ></canvas>
+							<canvas id="canvas2DCommand"class="canvas2d" ></canvas>
+						</div>
+					</div>
+				</div>
 </body>
 
 <!-- vertex shader -->

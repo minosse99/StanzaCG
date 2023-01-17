@@ -1,8 +1,8 @@
 
 import { MeshLoader } from "./MeshLoader.js";
 
-import { Camera, setCameraControls} from "./Camera.js";
-import { degToRad,radToDeg,createXYQuadVertices,projectionMatrix,isSmartphone} from "./../utils.js";
+import { Camera, setCameraControls,makeKeyCanvas} from "./Camera.js";
+import { degToRad,radToDeg,createXYQuadVertices,projectionMatrix,isSmartphone, makeText} from "../utils.js";
 import { AnimatedCamera } from "./AnimatedCamera.js";
 import {CameraSmartphone,setCameraControlSmartphone, getUpdateCamera} from "./CameraSmartphone.js";
 
@@ -164,11 +164,16 @@ export class Core {
 		if(!isSmartphone(this.mainCanvas)){
 			camera = new Camera(position, target, up);
 			setCameraControls(this.mainCanvas,camera,lookAt);
+			var canvas2dC = document.getElementById("canvas2DCommand");
+			var contextC = canvas2dC.getContext("2d");
+			makeKeyCanvas(contextC,canvas2dC,camera);
+
 		}else{
 			camera = new CameraSmartphone(position, target, up,70);
 			setCameraControlSmartphone(this.mainCanvas)
 		}
 		mainCanvas = this.mainCanvas;
+		
 	}
 	
 }
@@ -200,7 +205,9 @@ export function initProgramRender() {
 	
 	listPrograms = [[mainProgram, gl]];
 
-	
+	var canvas2dT = document.getElementById("canvas2DText");
+	var contextT = canvas2dT.getContext("2d");
+	makeText(contextT,canvas2dT);
 	//drawSkybox(gl,skybox.programInfo, camera.viewMatrix(),projectionMatrix(gl));
 	document.getElementById('selectLookat').addEventListener("change", (e) => {
 		let select = document.getElementById('selectLookat');

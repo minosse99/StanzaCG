@@ -1,3 +1,4 @@
+import {makeText} from '../utils.js';
 let updateCamera = true;
 // Parametri globali utilizzati all'interno di Camera.js.
 //
@@ -289,4 +290,81 @@ function degToRad(d) {
 
 function radTodeg(d){
 	return (d * 180) / Math.PI;
+}
+
+//Canvas 2D 
+//draw buttons
+export function makeKeyCanvas(context,canvas,camera) {
+	context.clearRect(0, 0, context.clientWidth, context.clientHeight);
+
+    var buttons = [];
+    buttons.push(makeButton(1, 40,100, 30, 30, 'S', '#21e6e3', 'black', 'black', function () {camera.dolly(-step); }))
+    buttons.push(makeButton(2, 40, 20, 30, 30, 'W', '#21e6e3', 'black', 'black', function () { camera.dolly(step); }))
+    buttons.push(makeButton(3, 75, 60, 30, 30, 'D', '#21e6e3', 'black', 'black', function () {  camera.truck(step); }))
+    buttons.push(makeButton(4, 5, 60, 30, 30, 'A', '#21e6e3', 'black', 'black', function () { camera.truck(-step); }))
+    
+
+    drawAll();
+     canvas.addEventListener("click", function (e) {
+		let step = 0.2;
+
+        if (context.isPointInPath(buttons[0], e.offsetX, e.offsetY)) {
+             camera.dolly(-step);
+        }
+        if (context.isPointInPath(buttons[1], e.offsetX, e.offsetY)) {
+             camera.dolly(step);
+        }
+        if (context.isPointInPath(buttons[2], e.offsetX, e.offsetY)) {
+             camera.truck(step);
+        }
+        if (context.isPointInPath(buttons[3], e.offsetX, e.offsetY)) {
+             camera.truck(-step);
+        }
+
+    });
+
+
+
+    function makeButton(id, x, y, w, h, label, fill, stroke, labelcolor, clickFn, releaseFn) {
+        var button = new Path2D();
+        button.rect(x, y, w, h);
+        button.x = x;
+        button.y = y;
+        button.w = w;
+        button.h = h;
+        button.id = id;
+        button.label = label;
+        button.fill = fill;
+        button.stroke = stroke;
+        button.labelcolor = labelcolor;
+        button.clickFn = clickFn;
+        button.releaseFn = releaseFn;
+        return button;
+    }
+
+    function drawAll() {
+        for (var i = 0; i < buttons.length; i++) {
+            drawButton(buttons[i], false);
+        }
+    }
+
+    function drawButton(b, isDown) {
+        context.clearRect(b.x - 1, b.y - 1, b.w + 2, b.h + 2);
+        context.fillStyle = b.fill;
+        context.fillRect(b.x, b.y, b.w, b.h);
+        context.strokeStyle = b.stroke;
+        context.strokeRect(b.x, b.y, b.w, b.h);
+        context.textAlign = 'center';
+        context.textBaseline = 'middle';
+        context.fillStyle = b.labelcolor;
+        context.fillText(b.label, b.x + b.w / 2, b.y + b.h / 2);
+        if (isDown) {
+            context.beginPath();
+            context.moveTo(b.x, b.y + b.h);
+            context.lineTo(b.x, b.y);
+            context.lineTo(b.x + b.w, b.y);
+            context.strokeStyle = 'black';
+            context.stroke();
+        }
+    }
 }

@@ -7,6 +7,28 @@
 		return r * 180 / Math.PI;
 	}
 
+function makeText(context,canvas){
+	let commands = [
+	"Premi W/S per muoverti in avanti/indietro",
+	"Premi A/D per muoverti a sinistra/destra",
+	"Premi Q/E per muoverti in alto/basso",
+	"Premi G/K per ruotare a destra/sinistra",	
+	"Premi U/J per ruotare in alto/basso",
+	"Premi L per resettare l'inclinazione",
+	"Premi le frecce per muovere la visuale",
+	"Premi la rotellina del mouse per zoomare",
+];
+	
+	context.font = "16px Arial";
+
+      context.fillStyle = "black";
+    let size = 25	;
+    var gap = 15;
+	commands.forEach(element => {
+		context.fillText(element, 0, size + gap);
+		size += gap;
+	});
+}
 	function  projectionMatrix(gl){
 		let fieldOfViewRadians = degToRad(70);
 		let aspect =gl.canvas.clientWidth / gl.canvas.clientHeight;
@@ -48,4 +70,6 @@
 		return (canvas.clientHeight < 400 || canvas.clientWidth < 400);
 	}
 	
-	export {degToRad,radToDeg,createXYQuadVertices,projectionMatrix,isSmartphone};
+	
+
+export {degToRad,radToDeg,createXYQuadVertices,makeText,projectionMatrix,isSmartphone};
