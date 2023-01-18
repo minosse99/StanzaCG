@@ -7,40 +7,40 @@
 	<link rel="stylesheet" href="style.css" />
 	<link rel="shortcut icon" href="#" />
 	<script src="https://cdn.tailwindcss.com"></script>
-	<title>CG project</title>
+	<title>Progetto CG</title>
 </head>
 
-<body class="bg-gradient-to-r from-sky-500 to-indigo-500" >
-	<div class="lg flex justify-center items-center columns-1 flex-col min-[400px]:flex-row">
+<body class="bg-gradient-to-r from-sky-500 to-indigo-500 " >
+	<div class="lg flex justify-center items-center columns-1 flex-col min-[400px]:flex-row ">
 				<div class="my-1 column-1">
 					<canvas class="rounded-md w-[1028px] max-sm:w-[320px] h-[680px] max-sm:h-[400px]" id="canvas">
 					</canvas>
 				</div>
 		
-				<div class="column-2 mx-4 max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700" >
+				<div class="column-2 mx-4  my-2 max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700" >
 					<div>
 					<div class="title">
-						<h5  class="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-3xl lg:text-3xl dark:text-white">Computer Graphics Project</h5>
+						<h5  class="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-3xl lg:text-3xl dark:text-white">Progetto CG - Stanza</h5>
 					</div>
 					
 					<div>
-					<p class="mb-3 font-normal text-gray-700 dark:text-gray-400">	Project developed for the Computer Graphics course at the University of Bologna.</br>
-						AA.2021/22 Department of Information Engineering and Computer Science.</p>
+					<p class="mb-3 font-normal text-gray-700 dark:text-gray-400">	Progetto sviluppato da Simone Boldrini <br/> Corso di Computer Graphics presso l'Universitá di Bologna.</br>
+						AA.2021/22 Dipartimento di Scienze e Ingegneria Informatica.</p>
 					</div>
 					<div>
 						<div class="max-sm:hidden">
 							<fieldset class="border border-solid border-gray-300" >
 								<legend><h3 class="text-gray-100">Trasparenza<h3></legend>
 								<div>
-								<input type="checkbox" id="cx" name="Parete Cx" class=" mx-4 w-3 h-3 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+								<input type="checkbox" id="cx" name="Parete Cx" class=" mx-3 w-3 h-3 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
 								<label class="text-gray-100" for="Parete Cx">Parete Cx</label>
 								</div>
 								<div>
-								<input type="checkbox" id="dx" name="Parete Dx" class="mx-4 w-3 h-3 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+								<input type="checkbox" id="dx" name="Parete Dx" class="mx-3 w-3 h-3 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
 								<label class="text-gray-100" for="Parete Dx">Parete Dx</label>
 								</div>
 								<div>
-									<input type="checkbox" id="sx" name="Parete Sx" class="mx-4 w-3 h-3 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+									<input type="checkbox" id="sx" name="Parete Sx" class="mx-3 w-3 h-3 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
 									<label class="text-gray-100" for="Parete Sx">Parete Sx</label>
 								</div>
 							</fieldset>
@@ -48,8 +48,10 @@
 								<label for="lookat" class="text-white">Punta la telecamera verso ...</label>
 								<select name="LookAt" id="selectLookat" disabled></select>
 								<br/>	<br/>
-								<input type="button"class="px-8 py-3 font-semibold rounded-full dark:bg-gray-100 dark:text-gray-800"
-								id="switch_camera" name="camera" value="Animate Camera" >
+								<div class="flex justify-center">
+								<input type="button"class="px-6 py-1 font-semibold rounded-full dark:bg-gray-100 dark:text-gray-800"
+								id="animateCamera" name="camera" value="Animate Camera" >
+								</div>
 								</div>
 							</div>
 						<div class="max-sm:hidden">
@@ -149,13 +151,13 @@
 </script>
 
 <!-- Libreria -->
-<script type="text/javascript" src="./JS/JSCourse/glm_utils.js"></script>
-<script type="text/javascript" src="./JS/JSCourse/jquery-3.6.0.js"></script>
-<script type="text/javascript" src="./JS/JSCourse/m4.js"></script>
-<script type="text/javascript" src="./JS/JSCourse/mesh_utils.js"></script>
-<script type="text/javascript" src="./JS/JSCourse/webgl-utils.js"></script>
-<script type="text/javascript" src="./JS/JSCourse/load_mesh.js"></script>
+<script type="text/javascript" src="./lib/utilities/glm_utils.js"></script>
+<script type="text/javascript" src="./lib/utilities/jquery-3.6.0.js"></script>
+<script type="text/javascript" src="./lib/utilities/m4.js"></script>
+<script type="text/javascript" src="./lib/utilities/mesh_utils.js"></script>
+<script type="text/javascript" src="./lib/utilities/webgl-utils.js"></script>
+<script type="text/javascript" src="./lib/utilities/load_mesh.js"></script>
 
-<script type="module" src="./JS/main.js"></script>
+<script type="module" src="./lib/main.js"></script>
 
 </html>

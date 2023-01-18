@@ -1,8 +1,8 @@
 
-import { Scene } from "./JSTools/Scene.js";
-import { Core, initProgramRender, render } from "./JSTools/Core.js";
+import { Scene } from "./tools/Scene.js";
+import { Core, initProgramRender, render } from "./tools/Core.js";
 
-import { Camera } from "./JSTools/Camera.js";
+import { Camera } from "./tools/Camera.js";
 
 let sceneComposition = new Scene();
 sceneComposition.sceneObj.push( {
@@ -48,7 +48,7 @@ sceneComposition.sceneObj.push( {
 sceneComposition.sceneObj.push( {
     alias: "tavolo",
     pathOBJ: "./models/tavolo.obj",
-    coords: { x: 0, y: 0, z: 0 },rotate:  false
+    coords: { x: -7.5, y: -4.9, z:0 },rotate:  false
 });
 
 sceneComposition.sceneObj.push( {
@@ -78,10 +78,10 @@ sceneComposition.sceneObj.push( {
 
 let core = new Core("canvas");
 
-core.setupScene(sceneComposition);
+core.initScene(sceneComposition);
 
 
-core.generateCamera();
+core.initCamera();
 
 core.prepareSkybox().then(() => {});
 

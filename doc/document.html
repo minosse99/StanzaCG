@@ -6,60 +6,147 @@
         
     </head>
     <style>
-        h1,h2,h3{
-            text-align: center;
-        }
+        
         h5{
             text-align: center;
             font-style: italic;
             font-size: large;
         }
+        body{
+            margin: 0 auto;
+            max-width: 50em;
+            padding-left: 20px;
+            padding-right: 20px;
+            padding-top: 50px;
+            padding-bottom: 50px;
+            hyphens: auto;
+            text-rendering: optimizeLegibility;
+            font-kerning: normal;
+        }
+        .center{
+            text-align: center;
+        }
+        .centerDot{
+            display: flex; 
+            justify-content: center; 
+        }
+        img{
+            justify-content: center;
+            display: flex;
+        }
+        h2,h3,h4{
+            font-size: 30px;
+        }
+       
+        
     </style>
     <body>
-        <h1>Relazione Progetto Computer Graphics</h1>
-        <h5>Simone Boldrini</h5>
-        <h2>Introduzione</h2>
+        <h1 class="center">Relazione Progetto Computer Graphics</h1>
+        <h5 class="center">Simone Boldrini</h5>
+        <h2 class="center">Introduzione</h2>
         <p>Il progetto consiste nella realizzazione di 3D Webapp usando WebGL (HTML5, CSS e contesto webgl), linguaggio JavaScript e OpenGL ES SL con browser Chrome</p>
-
-        <h2>Sorgenti</h2>
-        <div>
+        <center><img src="interface.png" width="60%"/></center>
+        <h2 class="center">Sorgenti</h2>
+        <div class="centerDot">
             <ul>
-                <li><a href="#Main">Main</a></li>
-                <li><a href="#Utils">Utils</a></li>
-                <li><a href="#Core">Core</a></li>
-                <li><a href="#Camera">Camera</a></li>
-                <li><a href="#Mesh">Mesh</a></li>
-                <li><a href="#Object">Object</a></li>
+                <li ><a href="#main">Main</a></li>
+                <li ><a href="#utils">Utils</a></li>
+                <li ><a href="#core">Core</a></li>
+                <li ><a href="#camera">Camera</a></li>
+                <li ><a href="#scene">Scene</a></li>
+                <li><a href="#object">Object</a></li>
+                <li><a href="#control">Control</a></li>
+                <li><a href="#skybox">SkyBox</a></li>
             </ul>
         </div>
-        <h3>Main</h3>
+        <h3 id="Main">Main</h3>
 
-        <h3>Utils</h3>
-        <h3>Core</h3>
-        <h3>Camera</h3>
-            In questa sezione osserviamo le 3 possibili camere che vengono utilizzare per la visualizzazione del mondo 3D.
-            Abbiamo 3 camere che sono:
-            <ul>
-                <li>Standard</li>
-                <li>Animata</li>
-                <li>Per dispositivi mobile</li>
-            </ul>
-            La prima fa uso dei parametri <b>Position,forward,right,up</b> e tiene come parametro di default una <b>fieldOfView</b>
-            Mentre le altre due camera si muovono attraverso gli assi delle coordinate polari <b>Theta,Phi</b> andando a modificare questi parametri.
-            La Camera Smartphone è una camera che si muove in base ai movimenti touch dell'utente mouse, mentre la Animate Camera si muove attraverso il metodo <b>#move</b> e gira all'infinito avendo sempre come lookAt il centro della scena (0,0,0)
-            <br/>
-            Andiamo a vedere i metodi della classe Camera:
-            <ul>
-                <li><b>Tilt</b> Ruota la visuale della camera in alto o in basso.</li>
-                <li><b>Pan</b> Ruota la visuale della camera a destra o a sinistra.</li>
-                <li><b>Cant</b> Routa la camera lateralmente</li>
-                <li><b>Truck</b>Muove la camera a destra o sinistra mantenendo invariata la direzione della camera.</li>
-                <li><b>Dolly</b> Muove la camera in avanti o indietro, cambiando la direzione di forward.</li>
-                <li><b>Pedastal</b> Alza o abbassa la camera</li>
-                <li><b>ViewMatrix</b> Ritorna la visuale della camera a seconda dell'oggetto che si sceglie di puntare (di default sará il centro)</li>
-
-            In seguito sempre dentro alla classe Camera troveremo i controlli per l'interazione dell'utente <b>setCameraControls</b> e l'interazione dal <b>Canvas 2D</b>
-        <h3>Mesh</h3>
-        <h3>Object</h3>
+        Main.js é lo script iniziale che viene richiamato dal frammento html, all'interno di esso troviamo la lista di mesh che devono essere caricati con i vari attributi( vedi <a href="#Scene">Scene.js</a>).
+        Inoltre viene istanziato l'oggetto Core che é il motore principale del programma, esso si occupa di caricare le mesh, inizializzare la scena, la camera e i vari controlli.
+        Infine inizializziamo il programma di render e avviamo lo stesso
+        <h3 id="utils">Utils</h3>
+        Il file <b>Utils.js</b> contiene un insieme di funzioni che vengono richiamate all'interno di tutto il programma.
+        <h3 id="core">Core</h3>
+        La classe <b>Core.js</b> é il motore principale del programma, esso si occupa di caricare le mesh, inizializzare la scena, la camera e i vari controlli.
+        <br/>
+        <h4>Metodi</h4>
+        <ul>
+            <li><b>init</b> Principalmente si occupa di inizializzare le variabili </li>
+            <li><b>initScene</b> Prendendo un Oggetto che contiene una lista di mesh inizia ad aggiungere gli elementi al meshLoader che si occuperá a sua volta di chiamare la funzione LoadMesh</li>
+            <li><b>initCamera</b> Inizializza la camera, controllando che sia uno schermo per PC o per smartphone e settando i vari controlli nel caso</li>
+            <li><b>initRender</b> Inizializza il programma di render</li>
+            <li><b>render</b> Avvia il programma di render, renderizzando gli elementi</li>
+        </ul>
+        <h3 id="camera">Camera</h3>
+        In questa sezione osserviamo le 3 possibili camere che vengono utilizzare per la visualizzazione del mondo 3D.
+        Abbiamo 3 camere che sono:
+        <ul>
+            <li>Standard</li>
+            <li>Animata</li>
+            <li>Per dispositivi mobile</li>
+        </ul>
+        La prima fa uso dei parametri <b>Position,forward,right,up</b> e tiene come parametro di default una <b>fieldOfView</b>
+        Mentre le altre due camera si muovono attraverso gli assi delle coordinate polari <b>Theta,Phi</b> andando a modificare questi parametri.
+        La Camera Smartphone è una camera che si muove in base ai movimenti touch dell'utente mouse, mentre la Animate Camera si muove attraverso il metodo <b>#move</b> e gira all'infinito avendo sempre come lookAt il centro della scena (0,0,0)
+       <center>
+       <table cellspacing="0" cellpadding="0"><tr><td>
+            <img id="smartphone" src="smartphone.png" width="250px"height="400px"/>
+        </td><td>
+            <img id="animateCamera" src="animateCamera.png" width="500" height="400px"/>
+        </td>
+        </tr>
+        </table>
+        </center>
+        <br/>
+        Andiamo a vedere i metodi della classe Camera:
+        <ul>
+            <li><b>Tilt</b> Ruota la visuale della camera in alto o in basso.</li>
+            <li><b>Pan</b> Ruota la visuale della camera a destra o a sinistra.</li>
+            <li><b>Cant</b> Routa la camera lateralmente</li>
+            <li><b>Truck</b>Muove la camera a destra o sinistra mantenendo invariata la direzione della camera.</li>
+            <li><b>Dolly</b> Muove la camera in avanti o indietro, cambiando la direzione di forward.</li>
+            <li><b>Pedastal</b> Alza o abbassa la camera</li>
+            <li><b>ViewMatrix</b> Ritorna la visuale della camera a seconda dell'oggetto che si sceglie di puntare (di default sará il centro)</li>
+        </ul>
+        In seguito sempre dentro alla classe Camera troveremo i controlli per l'interazione dell'utente <b>setCameraControls</b> e l'interazione dal <b>Canvas 2D</b><br/>
+        <h3 id="scene">Scene</h3>
+        La classe <b> Scene</b> si occupa di gestire gli oggetti che fanno riferimento alle mesh:
+        <ul>
+            <li><i>Alias</i></li>
+            <li><i>Path Obj</i></li>
+            <li><i>Coords</i></li>
+            <li><i>Rotate</i></li>
+        </ul>
+        L'attributo Coords contiene l'offset delle posizioni rispetto a quello effettivamente presente sul file .obj, mentre l'attributo rotate é un booleano che servirá per determinare se applicargli una rotazione o meno.
+        <h3 id="object">Object</h3>
+        Classe Object permette di gestire i singoli oggetti della scena e di applicare le varie trasformazioni.
+        <b>Object</b> é una classe che contiene i seguenti attributi:
+        <ul>
+            <li><i>Alias</i></li>
+            <li><i>Mesh</i></li>
+            <li><i>Position</i>: offset rispetto alle coordinate x,y,z</li>
+            <li><i>Rotate</i></li>
+        </ul>
+        e contiene i metodi:
+        <ul>
+            <li><b>computer_position</b> Permette di calcolare la nuova posizione avendo calcolato l'offset(si usa nel caso della rotazione)</li>
+            <li><b>compute_idleAnimation</b></li>
+            <li><b>compute_player</b> Trasla l'oggetto</li>
+            <li><b>render</b></li>
+            <li><b>drawScene</b></li>
+        </ul>
+        <h3 id="control">Control</h3>
+        In questa sezione parleremo dell'interazione dell'utente con la scena, in particolare dei controlli che permettono di muovere la camera e di interagire con gli oggetti.
+        <center><img id="control" src="control.png" width="300" height="400px"/></center>
+        Nella prima parte troviamo la possibilitá di applicare le trasparenze alle pareti in modo da poterci vedere attraverso.
+        <center><img id="trasparenze" src="trasparenze.png" width="400px" height="250px"/></center>
+        Mentre nella seconda la lista di commandi per interagire con la camera Principale, sempre nel menu troviamo 4 bottoni implementati su un Canvas 2D che ci permette di spostare la camera nelle 4 direzioni.<br/>
+        Troviamo un bottone "Animate Camera" che ci permette di cambiare camera(come giá visto in <a href="#camera">Camera</a>) passando ad una animazione.<br/>
+        Mentre troviamo anche la possibilitá di cambiare il target della camera, ovvero il punto a cui la camera sta puntando a obiettivi predefiniti come la mesh della scimmia,della tv, del tavolo o del centro(default).<br/>   
+        <center><img src="focus.png" width="50%" /></center>
+        <h3 id="skybox">Skybox</h3>
+        Attorno alla nostra scena, troviamo uno sfondo che ci permette di vedere dei grattacieli e allo stesso tempo un pavimento, questo sfondo é una Skybox, ovvero una mesh che viene applicata come sfondo della scena.
+        <center><img src="skybox_city.png" width="50%" /></center>
+        Sono caricate 6 immagini<i>(prepareSkyBox())</i> come texture e costruite in modo da formare una CubeMap, ed infine una volta renderizzati tutti gli elementi della scena dovremmo impostare il nostro sfondo 
     </body>
 </html>

@@ -2,7 +2,7 @@
 import { MeshLoader } from "./MeshLoader.js";
 
 import { Camera, setCameraControls,makeKeyCanvas} from "./Camera.js";
-import { degToRad,radToDeg,createXYQuadVertices,projectionMatrix,isSmartphone, makeText} from "../utils.js";
+import { degToRad,radToDeg,createXYQuadVertices,projectionMatrix,isSmartphone, makeText,resizeCanvasToDisplaySize} from "../utils.js";
 import { AnimatedCamera } from "./AnimatedCamera.js";
 import {CameraSmartphone,setCameraControlSmartphone, getUpdateCamera} from "./CameraSmartphone.js";
 
@@ -62,7 +62,7 @@ export class Core {
 	 * 
 	 * @param {List} sceneComposition List of objects that will be rendered in the scene.
 	 */
-	setupScene(sceneComposition) {
+	initScene(sceneComposition) {
 		console.log("Core.js - Start scene setup");
 
 		// Load all the meshes in the scene
@@ -78,13 +78,11 @@ export class Core {
 			if(obj.alias === "tv"  || obj.alias ==="tavolo" ){
 				listObjectToLook.push(obj);
 			}else if(obj.alias === "scimmia"){
-				obj.coords= [2,11,7];
+				obj.coords= {x:2,y:11,z:7};
 				listObjectToLook.push(obj);
 			}
 		}
 		document.getElementById('selectLookat').innerHTML = listObjectToLook.map((obj) => `<option value="${obj.alias}">${obj.alias}</option>`).join('');
-
-		
 	}
 
 	
@@ -157,7 +155,7 @@ export class Core {
 	 * Function that generates the camera for the rendering.
 	 * 
 	 */
-	generateCamera() {
+	initCamera() {
 		console.log("Core.js - Start camera setup");
 
 		const position = [-19,8,5], target = [0, 1, 0], up = [0, 1, 0];
@@ -179,7 +177,7 @@ export class Core {
 	
 }
 
-document.getElementById('switch_camera').onclick = function() {
+document.getElementById('animateCamera').onclick = function() {
 	const position = [-47,7,3], target = [0, 1, 0], up = [0, 1, 0];
 	if (camera instanceof AnimatedCamera){
 		if(!isSmartphone(mainCanvas)){
@@ -215,7 +213,8 @@ export function initProgramRender() {
 		let obj = listObjectToLook.find((obj) => obj.alias === select.value);
 		camera.setLookAt(obj.coords);
 	});
-
+	gl.enable(gl.BLEND);
+	gl.enable(gl.DEPTH_TEST);
 	
 }
 
@@ -227,8 +226,8 @@ export function initProgramRender() {
 export function render(time = 0) {
 	time *= 0.002;
 	
-	gl.enable(gl.CULL_FACE);
-   	gl.enable(gl.DEPTH_TEST);
+	//gl.enable(gl.CULL_FACE);
+   	//
    	gl.enable(gl.BLEND);
    	gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
 
@@ -332,20 +331,3 @@ document.getElementById("sx").addEventListener("change", (e) => {
 });
 
 
-function resizeCanvasToDisplaySize(canvas) {
-    // Lookup the size the browser is displaying the canvas in CSS pixels.
-    const displayWidth = canvas.clientWidth;
-    const displayHeight = canvas.clientHeight;
-
-    // Check if the canvas is not the same size.
-    const needResize = canvas.width !== displayWidth ||
-        canvas.height !== displayHeight;
-
-    if (needResize) {
-        // Make the canvas the same size
-        canvas.width = displayWidth;
-        canvas.height = displayHeight;
-    }
-
-    return needResize;
-}

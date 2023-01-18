@@ -37,10 +37,7 @@ export class Object{
 		}
 	}
 
-	// Calcolo della nuova posizione della mesh (mesh.positions e mesh.normals).
-	// TODO: Chiedere al professore perchè rotazione + traslazione portano ad un movimento anomalo.
 	compute_idleAnimation(deltaY) {
-		//m4.translate(this.mesh.position, 2,11,7);
 		this.offdeltaY = deltaY;
 		for (let i = 0; i < this.mesh.positions.length; i += 3) {
 			var pos = [];
@@ -115,10 +112,6 @@ export class Object{
 			gl.getUniformLocation(program, "specular"),
 			this.mesh.specular
 		);
-		/*gl.uniform3fv(
-			gl.getUniformLocation(program, "emissive"),
-			this.mesh.emissive
-		);*/
 		gl.uniform3fv(
 			gl.getUniformLocation(program, "u_ambientLight"),
 			light.ambientLight
@@ -212,8 +205,6 @@ export class Object{
        
 		// Draw the scene.
 		function drawScene(time, mesh) {
-			//if(isScreen || rotate) gl.bindTexture(gl.TEXTURE_2D, mesh.mainTexture);
-            //else gl.bindTexture(gl.TEXTURE_2D, mesh.sideTexture);
 			 gl.bindTexture(gl.TEXTURE_2D, mesh.mainTexture);
 			gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
 

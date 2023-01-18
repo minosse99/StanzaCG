@@ -525,7 +525,7 @@ var Sizzle =
  * Sizzle CSS Selector Engine v2.3.6
  * https://sizzlejs.com/
  *
- * Copyright JS Foundation and other contributors
+ * Copyright lib Foundation and other contributors
  * Released under the MIT license
  * https://js.foundation/
  *

@@ -71,6 +71,23 @@ function makeText(context,canvas){
 	}
 	
 	
+function resizeCanvasToDisplaySize(canvas) {
+    // Lookup the size the browser is displaying the canvas in CSS pixels.
+    const displayWidth = canvas.clientWidth;
+    const displayHeight = canvas.clientHeight;
+
+    // Check if the canvas is not the same size.
+    const needResize = canvas.width !== displayWidth ||
+        canvas.height !== displayHeight;
+
+    if (needResize) {
+        // Make the canvas the same size
+        canvas.width = displayWidth;
+        canvas.height = displayHeight;
+    }
+
+    return needResize;
+}
 	
 	function makeButton(id, x, y, w, h, label, fill, stroke, labelcolor, clickFn, releaseFn) {
         var button = new Path2D();
@@ -89,4 +106,4 @@ function makeText(context,canvas){
         return button;
     }
 
-export {degToRad,radToDeg,createXYQuadVertices,makeText,projectionMatrix,isSmartphone,makeButton};
+export {degToRad,radToDeg,createXYQuadVertices,makeText,projectionMatrix,isSmartphone,resizeCanvasToDisplaySize,makeButton};

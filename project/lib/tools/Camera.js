@@ -1,8 +1,7 @@
-import {makeButton} from '../utils.js';
+import {makeButton,degToRad} from '../utils.js';
 
-// Parametri globali utilizzati all'interno di Camera.js.
-//
 let drag;
+
 let THETA = degToRad(270),	//ANGLE X
 	PHI = degToRad(25);		//ANGLE Y
 let old_x, old_y;
@@ -13,16 +12,7 @@ let animateCamera = false;
 let maxRadius = 360,
 	minRadius = 30;
 
-// Definizione della classe "Camera".
-// A suo interno vi è la completa gestione delle caratteristiche relative
-// alla camera.
 export class Camera {
-	// Costruttore della classe "Camera".
-	// position, posizione spaziale (x, y, z) della camera.
-	// up, ...
-	// target, soggetto della scena.
-	// fieldOfView, ...
-
 
 	constructor(position,lookAt, up) {
 		this.position = position;
@@ -62,7 +52,6 @@ export class Camera {
         this.right = m4.normalize(this.right);
     }
 
-    // Inclina una telecamera lateralmente mantenendone la posizione e la direzione di visualizzazione.
     cant(step){
         let rotation = m4.axisRotation(this.forward, (step / 2));
         this.right = m4.transformPoint(rotation, this.right)
@@ -72,24 +61,18 @@ export class Camera {
         this.up = m4.normalize(this.up);
     }
 
-    // Sposta la posizione di una telecamera lateralmente (sinistra o destra) mentre la direzione della visuale della telecamera è invariata.
-    // Puoi spostarti verso sinistra o verso destra.
     truck(dist){
         this.position[0] += + (this.right[0] * dist);
         this.position[1] += + (this.right[1] * dist);
         this.position[2] += + (this.right[2] * dist);
     }
 
-    // Alza o abbassa una telecamera sul suo supporto.
-    // Puoi alzare il piedistallo e abbassare il piedistallo.
-    pedestal(dist){
+     pedestal(dist){
         this.position[0] += (this.up[0] * dist);
         this.position[1] += (this.up[1] * dist);
         this.position[2] += (this.up[2] * dist);
     }
 
-    // Sposta una telecamera più vicino o più lontano dalla posizione che sta guardando.
-    // Puoi entrare e uscire.
     dolly(dist){
         this.position[0] += (this.forward[0] * dist);
         this.position[1] += (this.forward[1] * dist);
@@ -113,8 +96,6 @@ export class Camera {
 		let cameraMatrix;
 		if(lookAt || animateCamera){
         	cameraMatrix = m4.lookAt(this.position, this.target, this.up);
-			console.log('lookAt')
-		
 		}	else
 			cameraMatrix = m4.lookAt(this.position, look, this.up);
         return m4.inverse(cameraMatrix); // ViewMatrix
@@ -272,14 +253,6 @@ export function setCameraControls(canvas,camera,look) {
 };
 
 
-}
-
-function degToRad(d) {
-	return (d * Math.PI) / 180;
-}
-
-function radTodeg(d){
-	return (d * 180) / Math.PI;
 }
 
 //Canvas 2D 
