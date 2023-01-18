@@ -32,8 +32,7 @@ export class Camera {
 		this.fieldOfView = 70;
 	}	
 
- // Ruota la visuale di una telecamera in alto o in basso.
- // Puoi inclinare verso l'alto o verso il basso.
+ 
     tilt(step){
         let rotation = m4.axisRotation(this.right, (step / 2));
         this.forward = m4.transformPoint(rotation, this.forward)
@@ -46,13 +45,14 @@ export class Camera {
     }
 
 	align(){
-        this.up=[0,0,1];
-        this.forward[0] = 0;
-        this.right = m4.normalize(m4.cross(this.forward, this.up));
-    }
+		let lookAt = [0,1,0];
+		m4.normalize(m4.subtractVectors(lookAt, this.position));
 
-    // Ruota la visuale della telecamera orizzontalmente rispetto alla posizione dell'occhio della telecamera
-    // È possibile eseguire una panoramica a sinistra o una panoramica a destra.
+        let up=[0,1,0];
+		this.right = m4.normalize(m4.cross(this.forward, up));
+        this.up = m4.normalize(m4.cross(this.right, this.forward));
+	}
+
     pan(step){
         let rotation = m4.axisRotation(this.up, step);
         this.forward = m4.transformPoint(rotation,this.forward);
@@ -242,9 +242,8 @@ export function setCameraControls(canvas,camera,look) {
 		for(let i = 0 ; i < touches.length ; i++) {
 			dX = (-(touches[i].pageX - old_x) * 2 * Math.PI) / canvas.width;
 			dY = (-(touches[i].pageY - old_y) * 2 * Math.PI) / canvas.height;
-			THETA += dX;
-			PHI -= dY;
-
+			camera.pan(dX * 0.2);
+			camera.tilt	(dY * 0.2);
 			old_x = touches[i].pageX;
 			old_y = touches[i].pageY;
 			touch.preventDefault();	
@@ -289,10 +288,10 @@ export function makeKeyCanvas(context,canvas,camera) {
 	context.clearRect(0, 0, context.clientWidth, context.clientHeight);
 
     var buttons = [];
-    buttons.push(makeButton(1, 40,100, 30, 30, 'S', '#0ea5e9', 'white', 'grey', function () {camera.dolly(-step); }))
-    buttons.push(makeButton(2, 40, 20, 30, 30, 'W', '#0ea5e9', 'white', 'grey', function () { camera.dolly(step); }))
-    buttons.push(makeButton(3, 75, 60, 30, 30, 'D', '#0ea5e9', 'white', 'grey', function () {  camera.truck(step); }))
-    buttons.push(makeButton(4, 5, 60, 30, 30, 'A', '#0ea5e9', 'white', 'grey', function () { camera.truck(-step); }))
+    buttons.push(makeButton(1, 40,100, 30, 30, 'S', '#0ea5e9', 'white', 'white', function () {camera.dolly(-step); }))
+    buttons.push(makeButton(2, 40, 20, 30, 30, 'W', '#0ea5e9', 'white', 'white', function () { camera.dolly(step); }))
+    buttons.push(makeButton(3, 75, 60, 30, 30, 'D', '#0ea5e9', 'white', 'white', function () {  camera.truck(step); }))
+    buttons.push(makeButton(4, 5, 60, 30, 30, 'A', '#0ea5e9', 'white', 'white', function () { camera.truck(-step); }))
     
 
     drawAll();

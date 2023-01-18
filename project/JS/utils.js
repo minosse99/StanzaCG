@@ -19,11 +19,11 @@ function makeText(context,canvas){
 	"Premi la rotellina del mouse per zoomare",
 ];
 	
-	context.font = "16px Arial";
+	context.font = "15px Arial";
 
-      context.fillStyle = "black";
-    let size = 25	;
-    var gap = 15;
+      context.fillStyle = "white";
+    let size = 22;
+    var gap = 16;
 	commands.forEach(element => {
 		context.fillText(element, 0, size + gap);
 		size += gap;

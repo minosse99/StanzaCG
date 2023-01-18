@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Relazione</title>
+        
+    </head>
+    <style>
+        h1,h2,h3{
+            text-align: center;
+        }
+        h5{
+            text-align: center;
+            font-style: italic;
+            font-size: large;
+        }
+    </style>
+    <body>
+        <h1>Relazione Progetto Computer Graphics</h1>
+        <h5>Simone Boldrini</h5>
+        <h2>Introduzione</h2>
+        <p>Il progetto consiste nella realizzazione di 3D Webapp usando WebGL (HTML5, CSS e contesto webgl), linguaggio JavaScript e OpenGL ES SL con browser Chrome</p>
+
+        <h2>Sorgenti</h2>
+        <div>
+            <ul>
+                <li><a href="#Main">Main</a></li>
+                <li><a href="#Utils">Utils</a></li>
+                <li><a href="#Core">Core</a></li>
+                <li><a href="#Camera">Camera</a></li>
+                <li><a href="#Mesh">Mesh</a></li>
+                <li><a href="#Object">Object</a></li>
+            </ul>
+        </div>
+        <h3>Main</h3>
+
+        <h3>Utils</h3>
+        <h3>Core</h3>
+        <h3>Camera</h3>
+            In questa sezione osserviamo le 3 possibili camere che vengono utilizzare per la visualizzazione del mondo 3D.
+            Abbiamo 3 camere che sono:
+            <ul>
+                <li>Standard</li>
+                <li>Animata</li>
+                <li>Per dispositivi mobile</li>
+            </ul>
+            La prima fa uso dei parametri <b>Position,forward,right,up</b> e tiene come parametro di default una <b>fieldOfView</b>
+            Mentre le altre due camera si muovono attraverso gli assi delle coordinate polari <b>Theta,Phi</b> andando a modificare questi parametri.
+            La Camera Smartphone è una camera che si muove in base ai movimenti touch dell'utente mouse, mentre la Animate Camera si muove attraverso il metodo <b>#move</b> e gira all'infinito avendo sempre come lookAt il centro della scena (0,0,0)
+            <br/>
+            Andiamo a vedere i metodi della classe Camera:
+            <ul>
+                <li><b>Tilt</b> Ruota la visuale della camera in alto o in basso.</li>
+                <li><b>Pan</b> Ruota la visuale della camera a destra o a sinistra.</li>
+                <li><b>Cant</b> Routa la camera lateralmente</li>
+                <li><b>Truck</b>Muove la camera a destra o sinistra mantenendo invariata la direzione della camera.</li>
+                <li><b>Dolly</b> Muove la camera in avanti o indietro, cambiando la direzione di forward.</li>
+                <li><b>Pedastal</b> Alza o abbassa la camera</li>
+                <li><b>ViewMatrix</b> Ritorna la visuale della camera a seconda dell'oggetto che si sceglie di puntare (di default sará il centro)</li>
+
+            In seguito sempre dentro alla classe Camera troveremo i controlli per l'interazione dell'utente <b>setCameraControls</b> e l'interazione dal <b>Canvas 2D</b>
+        <h3>Mesh</h3>
+        <h3>Object</h3>
+    </body>
+</html>
