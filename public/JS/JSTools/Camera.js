@@ -1,5 +1,5 @@
-import {makeText} from '../utils.js';
-let updateCamera = true;
+import {makeButton} from '../utils.js';
+
 // Parametri globali utilizzati all'interno di Camera.js.
 //
 let drag;
@@ -201,7 +201,6 @@ export function setCameraControls(canvas,camera,look) {
 			}
 			case "l": {
 				camera.align();
-				
 				break;
 			}
 		}});
@@ -220,11 +219,8 @@ export function setCameraControls(canvas,camera,look) {
 
 	canvas.onmousemove = function (e) {
 		if (!drag) return false;
-		updateCamera = true;
 		dX = (-(e.pageX - old_x) * 2 * Math.PI) / canvas.width;
 		dY = (-(e.pageY - old_y) * 2 * Math.PI) / canvas.height;
-		if (PHI > degToRad(85)) PHI = degToRad(85);
-		if (PHI < degToRad(0)) PHI = degToRad(0);
 		camera.pan(dX * 0.2);
 		camera.tilt	(dY * 0.2);
 		old_x = e.pageX;
@@ -241,19 +237,14 @@ export function setCameraControls(canvas,camera,look) {
 	};
 
 	canvas.ontouchmove = function (touch) {
-
 		if (!drag) return false;
-		updateCamera = true;
 		let touches = touch.changedTouches;
-
-	
 		for(let i = 0 ; i < touches.length ; i++) {
 			dX = (-(touches[i].pageX - old_x) * 2 * Math.PI) / canvas.width;
 			dY = (-(touches[i].pageY - old_y) * 2 * Math.PI) / canvas.height;
 			THETA += dX;
 			PHI -= dY;
-			if (PHI > degToRad(85)) PHI = degToRad(85);
-			if (PHI < degToRad(0)) PHI = degToRad(0);
+
 			old_x = touches[i].pageX;
 			old_y = touches[i].pageY;
 			touch.preventDefault();	
@@ -298,15 +289,15 @@ export function makeKeyCanvas(context,canvas,camera) {
 	context.clearRect(0, 0, context.clientWidth, context.clientHeight);
 
     var buttons = [];
-    buttons.push(makeButton(1, 40,100, 30, 30, 'S', '#21e6e3', 'black', 'black', function () {camera.dolly(-step); }))
-    buttons.push(makeButton(2, 40, 20, 30, 30, 'W', '#21e6e3', 'black', 'black', function () { camera.dolly(step); }))
-    buttons.push(makeButton(3, 75, 60, 30, 30, 'D', '#21e6e3', 'black', 'black', function () {  camera.truck(step); }))
-    buttons.push(makeButton(4, 5, 60, 30, 30, 'A', '#21e6e3', 'black', 'black', function () { camera.truck(-step); }))
+    buttons.push(makeButton(1, 40,100, 30, 30, 'S', '#0ea5e9', 'white', 'grey', function () {camera.dolly(-step); }))
+    buttons.push(makeButton(2, 40, 20, 30, 30, 'W', '#0ea5e9', 'white', 'grey', function () { camera.dolly(step); }))
+    buttons.push(makeButton(3, 75, 60, 30, 30, 'D', '#0ea5e9', 'white', 'grey', function () {  camera.truck(step); }))
+    buttons.push(makeButton(4, 5, 60, 30, 30, 'A', '#0ea5e9', 'white', 'grey', function () { camera.truck(-step); }))
     
 
     drawAll();
      canvas.addEventListener("click", function (e) {
-		let step = 0.2;
+		let step = 0.3;
 
         if (context.isPointInPath(buttons[0], e.offsetX, e.offsetY)) {
              camera.dolly(-step);
@@ -322,25 +313,6 @@ export function makeKeyCanvas(context,canvas,camera) {
         }
 
     });
-
-
-
-    function makeButton(id, x, y, w, h, label, fill, stroke, labelcolor, clickFn, releaseFn) {
-        var button = new Path2D();
-        button.rect(x, y, w, h);
-        button.x = x;
-        button.y = y;
-        button.w = w;
-        button.h = h;
-        button.id = id;
-        button.label = label;
-        button.fill = fill;
-        button.stroke = stroke;
-        button.labelcolor = labelcolor;
-        button.clickFn = clickFn;
-        button.releaseFn = releaseFn;
-        return button;
-    }
 
     function drawAll() {
         for (var i = 0; i < buttons.length; i++) {

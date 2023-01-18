@@ -71,5 +71,22 @@ function makeText(context,canvas){
 	}
 	
 	
+	
+	function makeButton(id, x, y, w, h, label, fill, stroke, labelcolor, clickFn, releaseFn) {
+        var button = new Path2D();
+        button.rect(x, y, w, h);
+        button.x = x;
+        button.y = y;
+        button.w = w;
+        button.h = h;
+        button.id = id;
+        button.label = label;
+        button.fill = fill;
+        button.stroke = stroke;
+        button.labelcolor = labelcolor;
+        button.clickFn = clickFn;
+        button.releaseFn = releaseFn;
+        return button;
+    }
 
-export {degToRad,radToDeg,createXYQuadVertices,makeText,projectionMatrix,isSmartphone};
+export {degToRad,radToDeg,createXYQuadVertices,makeText,projectionMatrix,isSmartphone,makeButton};

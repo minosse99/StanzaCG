@@ -162,6 +162,7 @@ export class Core {
 
 		const position = [-19,8,5], target = [0, 1, 0], up = [0, 1, 0];
 		if(!isSmartphone(this.mainCanvas)){
+			console.log("is not smartphone")
 			camera = new Camera(position, target, up);
 			setCameraControls(this.mainCanvas,camera,lookAt);
 			var canvas2dC = document.getElementById("canvas2DCommand");
@@ -231,6 +232,7 @@ export function render(time = 0) {
    	gl.enable(gl.BLEND);
    	gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
 
+	resizeCanvasToDisplaySize(gl.canvas);
     // Clear the canvas AND the depth buffer.
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
