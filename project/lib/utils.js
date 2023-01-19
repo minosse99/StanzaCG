@@ -7,6 +7,11 @@
 		return r * 180 / Math.PI;
 	}
 
+	async function loadJson(url) {
+		const response = await fetch(url);
+		return await response.json();
+	}
+
 function makeText(context,canvas){
 	let commands = [
 	"Premi W/S per muoverti in avanti/indietro",
@@ -106,4 +111,4 @@ function resizeCanvasToDisplaySize(canvas) {
         return button;
     }
 
-export {degToRad,radToDeg,createXYQuadVertices,makeText,projectionMatrix,isSmartphone,resizeCanvasToDisplaySize,makeButton};
+export {degToRad,radToDeg,createXYQuadVertices,makeText,projectionMatrix,isSmartphone,resizeCanvasToDisplaySize,makeButton,loadJson};

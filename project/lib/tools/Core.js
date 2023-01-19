@@ -27,15 +27,10 @@ let positionLocation,skyboxLocation,viewDirectionProjectionInverseLocation;
 var canvas2dC,contextC ;
 export class Core {
 
-	/**
-	 * Constructor of the class. 
-	 * It initializes the canvas, the WebGL context and all the components for the rendering.
-	 * 
-	 * @param {String} idMainCanvas Identifier of the canvas element (Main screen).
-	 */
-	constructor(idMainCanvas) {
+
+	constructor() {
 		// Canvas and WebGL context initialization
-		this.mainCanvas = document.getElementById(idMainCanvas);
+		this.mainCanvas = document.getElementById("canvas");
 		this.gl = this.mainCanvas.getContext("webgl");
 		// Global variables initialization
 		gl = this.gl;
@@ -80,14 +75,15 @@ export class Core {
 	
 	async prepareSkybox(){
 		if(!isSmartphone(mainCanvas)){
+			//If is not a smartphone, create a skybox
 			skybox.programInfo = webglUtils.createProgramInfo(gl, ["skybox-vertex-shader", "skybox-fragment-shader"]);
 
 			const arrays2 = createXYQuadVertices.apply(null,  Array.prototype.slice.call(arguments, 1));
 			quadBufferInfo = webglUtils.createBufferInfoFromArrays(gl, arrays2);
-			// Create a texture.
+			// Create Texture
 			skybox.texture = gl.createTexture();
 			gl.bindTexture(gl.TEXTURE_CUBE_MAP, skybox.texture);
-		
+			//Load Cubemaps Faces
 			const faceInfos = [
 			{
 				target: gl.TEXTURE_CUBE_MAP_POSITIVE_X,
@@ -107,11 +103,11 @@ export class Core {
 			},
 			{
 				target: gl.TEXTURE_CUBE_MAP_POSITIVE_Z,
-				url: './models/img/negz.jpg',
+				url: './models/img/posz.jpg',
 			},
 			{
 				target: gl.TEXTURE_CUBE_MAP_NEGATIVE_Z,
-				url: './models/img/posz.jpg',
+				url: './models/img/negz.jpg',
 			},
 			];
 			faceInfos.forEach((faceInfo) => {

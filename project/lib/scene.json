@@ -1,0 +1,55 @@
+[ {
+    "alias": "scimmia",
+    "coords": { "x": 7.5, "y": 2, "z": 11 },
+    "rotate":  true
+},
+{
+    "alias": "mensola" ,
+    "coords": { "x": 0, "y": 0, "z": 0 },
+    "rotate":  false
+},
+{
+    "alias": "Pavimento",
+    "coords": { "x": 0, "y": 0, "z": 0 },
+    "rotate":  false
+},
+{   "alias": "sediaAx",   
+    "coords": { "x": 0, "y": 0, "z": 0 },
+    "rotate":  false
+},
+{   "alias": "sediaDX",
+    "coords": { "x": 0, "y": 0, "z": 0 },
+    "rotate":  false
+},
+{   "alias": "sediaBx",
+    "coords": { "x": 0, "y": 0, "z": 0 },
+    "rotate":  false
+},
+{   "alias": "sediaLX",
+    "coords": { "x": 0, "y": 0, "z": 0 },
+    "rotate":  false  
+},
+{   "alias": "tavolo",
+    "coords": { "x": -7.5, "y": -4.9, "z":0 },
+    "rotate":  false
+},
+{   "alias": "tv",
+    "coords": { "x": 12, "y": 4, "z": 6 },
+    "rotate":  false
+},
+{   "alias": "divano",
+    "coords": { "x": 0, "y": 0, "z": 0 },
+    "rotate":  false
+},
+{   "alias": "pareteSx",
+    "coords": { "x": 0, "y": 0, "z": 0 },
+    "rotate":  false
+},
+{   "alias": "pareteDx",
+    "coords": { "x": 0, "y": 0, "z": 0 },
+    "rotate":  false
+},
+{   "alias": "pareteCx",
+    "coords": { "x": 0, "y": 0, "z": 0 },
+    "rotate":  false
+}]
