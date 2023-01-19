@@ -191,8 +191,8 @@ export function initProgramRender() {
 export function render(time = 0) {
 	time *= 0.002;
 	
-	//gl.enable(gl.CULL_FACE);
-   	//
+	gl.enable(gl.CULL_FACE);
+   	
    	gl.enable(gl.BLEND);
    	gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
 

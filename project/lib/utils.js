@@ -18,7 +18,6 @@ function makeText(context,canvas){
 	"Premi A/D per muoverti a sinistra/destra",
 	"Premi Q/E per muoverti in alto/basso",
 	"Premi G/K per ruotare a destra/sinistra",	
-	"Premi U/J per ruotare in alto/basso",
 	"Premi L per resettare l'inclinazione",
 	"Premi le frecce per muovere la visuale",
 	"Premi la rotellina del mouse per zoomare",

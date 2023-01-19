@@ -1,7 +1,7 @@
 
 import { Scene } from "./tools/Scene.js";
 import { Core, initProgramRender, render } from "./tools/Core.js";
-import { loadJson } from "./utils.js";
+import { loadJson,isSmartphone } from "./utils.js";
 let sceneComposition = new Scene();
 
 //Load Element to compose the scene from scene.json
@@ -13,6 +13,7 @@ sceneComposition.addList(listElem);
 let core = new Core();
 core.initScene(sceneComposition);
 core.initCamera();
+
 core.prepareSkybox().then(() => {});
 
 //Rendering

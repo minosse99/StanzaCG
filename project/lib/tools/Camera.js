@@ -142,23 +142,15 @@ export function setCameraControls(canvas,camera,look) {
 				break;
 			}
 			case "e": {
-					camera.pedestal(-step);
-					break;
-				}
+				camera.pedestal(-step);
+				break;
+			}
 			case "g": {
 				camera.cant(-step);
 				break;
 			}
 			case "k": {
 				camera.cant(step);
-				break;
-			}
-			case "u":  {
-				camera.pedestal(step);
-				break;
-			}
-			case "j": {
-				camera.pedestal(-step);
 				break;
 			}
 			case "ArrowUp": {

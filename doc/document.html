@@ -22,6 +22,8 @@
             hyphens: auto;
             text-rendering: optimizeLegibility;
             font-kerning: normal;
+            font-size: 18px;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
         }
         .center{
             text-align: center;
@@ -33,6 +35,8 @@
         img{
             justify-content: center;
             display: flex;
+            margin-top: 1cm;
+            margin-bottom: 1cm;
         }
         h2,h3,h4{
             font-size: 30px;
@@ -45,7 +49,7 @@
         <h5 class="center">Simone Boldrini</h5>
         <h2 class="center">Introduzione</h2>
         <p>Il progetto consiste nella realizzazione di 3D Webapp usando WebGL (HTML5, CSS e contesto webgl), linguaggio JavaScript e OpenGL ES SL con browser Chrome</p>
-        <center><img src="interface.png" width="60%"/></center>
+        <center><img src="interface.png" width="70%"/></center>
         <h2 class="center">Sorgenti</h2>
         <div class="centerDot">
             <ul>
@@ -61,8 +65,7 @@
             </ul>
         </div>
         <h3 id="Main">Main</h3>
-
-        Main.js é lo script iniziale che viene richiamato dal frammento html, all'interno di esso troviamo la lista di mesh che devono essere caricati con i vari attributi( vedi <a href="#Scene">Scene.js</a>).
+        Main.js é lo script iniziale che viene richiamato dal frammento html, all'interno carichiamo il json che contiene gli elementi della scena( vedi <a href="#Scene">Scene.js</a>).
         Inoltre viene istanziato l'oggetto Core che é il motore principale del programma, esso si occupa di caricare le mesh, inizializzare la scena, la camera e i vari controlli.
         Infine inizializziamo il programma di render e avviamo lo stesso
         <h3 id="utils">Utils</h3>
@@ -76,7 +79,7 @@
             <li><b>initScene</b> Prendendo un Oggetto che contiene una lista di mesh inizia ad aggiungere gli elementi al meshLoader che si occuperá a sua volta di chiamare la funzione LoadMesh</li>
             <li><b>initCamera</b> Inizializza la camera, controllando che sia uno schermo per PC o per smartphone e settando i vari controlli nel caso</li>
             <li><b>initRender</b> Inizializza il programma di render</li>
-            <li><b>render</b> Avvia il programma di render, renderizzando gli elementi</li>
+            <li><b>render</b> Avvia la routine di render, renderizzando gli elementi</li>
         </ul>
         <h3 id="camera">Camera</h3>
         In questa sezione osserviamo le 3 possibili camere che vengono utilizzate per la visualizzazione del mondo 3D.
@@ -88,7 +91,7 @@
         </ul>
         La prima fa uso dei parametri <b>Position,forward,right,up</b> e tiene come parametro di default una <b>fieldOfView</b>
         Mentre le altre due camera si muovono attraverso gli assi delle coordinate polari <b>Theta,Phi</b> andando a modificare questi parametri.
-        La Camera Smartphone è una camera che si muove in base ai movimenti touch dell'utente, mentre la Animate Camera si muove attraverso il metodo <b>#move</b> e gira all'infinito avendo sempre come lookAt il centro della scena (0,0,0)
+        La Animate Camera si muove attraverso il metodo <b>#move</b> e gira all'infinito avendo sempre come lookAt il centro della scena (0,0,0) mentre la Camera Smartphone è una camera che si muove in base ai movimenti touch dell'utente. 
        <center>
        <table cellspacing="0" cellpadding="0"><tr><td>
             <img id="smartphone" src="smartphone.png" width="250px"height="400px"/>
@@ -129,7 +132,7 @@
             <li><i>Rotate</i></li>
         </ul>
         e contiene i metodi:
-        <ul>
+        <ul>    
             <li><b>computer_position</b> Permette di calcolare la nuova posizione avendo calcolato l'offset(si usa nel caso della rotazione)</li>
             <li><b>compute_idleAnimation</b> Permette di calcolare la rotazione al punto 0,0,0 e la traslazione sull' offset</li>
             <li><b>compute_player</b> Trasla l'oggetto</li>
@@ -147,7 +150,7 @@
         <h3 id="skybox">Skybox</h3>
         Attorno alla nostra scena, troviamo uno sfondo che ci permette di vedere dei grattacieli e allo stesso tempo un pavimento, questo sfondo é una Skybox, ovvero una mesh che viene applicata come sfondo della scena.
         <center><img src="skybox_city.png" width="50%" /></center>
-        Sono caricate 6 immagini<i>(prepareSkyBox())</i> come texture e costruite in modo da formare una CubeMap, ed infine una volta renderizzati tutti gli elementi della scena dovremmo impostare il nostro sfondo 
+        Sono caricate 6 immagini<i>(prepareSkyBox())</i> come texture e costruite in modo da formare una CubeMap, ed infine una volta renderizzati tutti gli elementi della scena dovremmo potere vedere il nostro sfondo 
         <h3 id="reference">Referenze</h3>
         Oltre al codice visto a lezione sono state utilizzate le seguenti fonti:
         <ul>

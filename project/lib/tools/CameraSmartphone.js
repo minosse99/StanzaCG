@@ -1,4 +1,4 @@
-import { degToRad } from "../utils.js";
+import { degToRad,radToDeg } from "../utils.js";
 let updateCamera = true;
 
 let drag;
@@ -27,8 +27,8 @@ export class CameraSmartphone {
 
 	moveCamera() {
 		this.position[0] = Math.cos(THETA) * this.radiusModify(radius);
-		this.position[1] = Math.sin(THETA) * this.radiusModify(radius);
-		this.position[2] = Math.sin(PHI) * radius;
+		this.position[2] = Math.sin(THETA) * this.radiusModify(radius);
+		this.position[1] = Math.sin(PHI) * radius;
 		updateCamera = false;
 	}
 
@@ -78,6 +78,7 @@ export function setCameraControlSmartphone(canvas) {
 			PHI -= dY;
 			if (PHI > degToRad(85)) PHI = degToRad(85);
 			if (PHI < degToRad(0)) PHI = degToRad(0);
+			
 			old_x = touches[i].pageX;
 			old_y = touches[i].pageY;
 			touch.preventDefault();	
