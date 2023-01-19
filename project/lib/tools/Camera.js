@@ -261,15 +261,15 @@ export function makeKeyCanvas(context,canvas,camera) {
 	context.clearRect(0, 0, context.clientWidth, context.clientHeight);
 
     var buttons = [];
-    buttons.push(makeButton(1, 40,100, 30, 30, 'S', '#0ea5e9', 'white', 'white', function () {camera.dolly(-step); }))
-    buttons.push(makeButton(2, 40, 20, 30, 30, 'W', '#0ea5e9', 'white', 'white', function () { camera.dolly(step); }))
-    buttons.push(makeButton(3, 75, 60, 30, 30, 'D', '#0ea5e9', 'white', 'white', function () {  camera.truck(step); }))
-    buttons.push(makeButton(4, 5, 60, 30, 30, 'A', '#0ea5e9', 'white', 'white', function () { camera.truck(-step); }))
+    buttons.push(makeButton(1, 40,100, 30, 30, 'S', '#0ea5e9', 'white', 'white', function () {camera.dolly(-0.5); }))
+    buttons.push(makeButton(2, 40, 20, 30, 30, 'W', '#0ea5e9', 'white', 'white', function () { camera.dolly(0.5); }))
+    buttons.push(makeButton(3, 75, 60, 30, 30, 'D', '#0ea5e9', 'white', 'white', function () {  camera.truck(0.5); }))
+    buttons.push(makeButton(4, 5, 60, 30, 30, 'A', '#0ea5e9', 'white', 'white', function () { camera.truck(-0.5); }))
     
 
     drawAll();
      canvas.addEventListener("click", function (e) {
-		let step = 0.3;
+		let step = 0.5;
 
         if (context.isPointInPath(buttons[0], e.offsetX, e.offsetY)) {
              camera.dolly(-step);

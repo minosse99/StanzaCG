@@ -6,7 +6,7 @@ import { degToRad,radToDeg,createXYQuadVertices,projectionMatrix,isSmartphone, m
 import { AnimatedCamera } from "./AnimatedCamera.js";
 import {CameraSmartphone,setCameraControlSmartphone, getUpdateCamera} from "./CameraSmartphone.js";
 
-
+import { Scene } from "./Scene.js";
 // WebGL context
 let gl;
 
@@ -24,7 +24,7 @@ let listObjectToLook =[{alias:'center', coords: {x:0, y:0, z:0}}];
 // TODO: Evaluate if this is the best way to do this
 let moveVectore;
 let positionLocation,skyboxLocation,viewDirectionProjectionInverseLocation;
-
+var canvas2dC,contextC ;
 export class Core {
 
 	/**
@@ -34,8 +34,6 @@ export class Core {
 	 * @param {String} idMainCanvas Identifier of the canvas element (Main screen).
 	 */
 	constructor(idMainCanvas) {
-		console.log("Core.js - Start WebGL Core initialization");
-
 		// Canvas and WebGL context initialization
 		this.mainCanvas = document.getElementById(idMainCanvas);
 		this.gl = this.mainCanvas.getContext("webgl");
@@ -52,8 +50,6 @@ export class Core {
  
 		// Global variables initialization
 		moveVectore = this.moveVectore;
-
-		console.log("Core.js - End WebGL Core initialization");
 	}
 
 
@@ -63,11 +59,7 @@ export class Core {
 	 * @param {List} sceneComposition List of objects that will be rendered in the scene.
 	 */
 	initScene(sceneComposition) {
-		console.log("Core.js - Start scene setup");
-
-		// Load all the meshes in the scene
 		for (const obj of sceneComposition.sceneObj) {
-			// Load the mesh
 			this.meshLoader.addMesh(
 				this.gl,
 				obj.alias,
@@ -88,7 +80,6 @@ export class Core {
 	
 	async prepareSkybox(){
 		if(!isSmartphone(mainCanvas)){
-			console.log("Core.js - Start skybox setup");
 			skybox.programInfo = webglUtils.createProgramInfo(gl, ["skybox-vertex-shader", "skybox-fragment-shader"]);
 
 			const arrays2 = createXYQuadVertices.apply(null,  Array.prototype.slice.call(arguments, 1));
@@ -151,20 +142,18 @@ export class Core {
 			gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR);
 		}
 	}
+
 	/**
 	 * Function that generates the camera for the rendering.
 	 * 
 	 */
 	initCamera() {
-		console.log("Core.js - Start camera setup");
-
 		const position = [-19,8,5], target = [0, 1, 0], up = [0, 1, 0];
 		if(!isSmartphone(this.mainCanvas)){
-			console.log("is not smartphone")
 			camera = new Camera(position, target, up);
 			setCameraControls(this.mainCanvas,camera,lookAt);
-			var canvas2dC = document.getElementById("canvas2DCommand");
-			var contextC = canvas2dC.getContext("2d");
+			canvas2dC = document.getElementById("canvas2DCommand");
+			contextC = canvas2dC.getContext("2d");
 			makeKeyCanvas(contextC,canvas2dC,camera);
 
 		}else{
@@ -177,22 +166,6 @@ export class Core {
 	
 }
 
-document.getElementById('animateCamera').onclick = function() {
-	const position = [-47,7,3], target = [0, 1, 0], up = [0, 1, 0];
-	if (camera instanceof AnimatedCamera){
-		if(!isSmartphone(mainCanvas)){
-			camera = new Camera(position, target, up,70);
-			setCameraControls(mainCanvas,camera,lookAt);
-		}else{
-			camera = new CameraSmartphone(position, target, up,70);
-			setCameraControlSmartphone(mainCanvas)
-			camera.moveCamera();
-		}
-		
-	}else{
-		camera = new AnimatedCamera();
-	}
-}
 
 export function initProgramRender() {
 	// setup GLSL program
@@ -207,7 +180,6 @@ export function initProgramRender() {
 	var canvas2dT = document.getElementById("canvas2DText");
 	var contextT = canvas2dT.getContext("2d");
 	makeText(contextT,canvas2dT);
-	//drawSkybox(gl,skybox.programInfo, camera.viewMatrix(),projectionMatrix(gl));
 	document.getElementById('selectLookat').addEventListener("change", (e) => {
 		let select = document.getElementById('selectLookat');
 		let obj = listObjectToLook.find((obj) => obj.alias === select.value);
@@ -331,3 +303,20 @@ document.getElementById("sx").addEventListener("change", (e) => {
 });
 
 
+document.getElementById('animateCamera').onclick = function() {
+	const position = [-47,7,3], target = [0, 1, 0], up = [0, 1, 0];
+	if (camera instanceof AnimatedCamera){
+		if(!isSmartphone(mainCanvas)){
+			camera = new Camera(position, target, up,70);
+			setCameraControls(mainCanvas,camera,lookAt);
+			makeKeyCanvas(contextC,canvas2dC,camera);
+		}else{
+			camera = new CameraSmartphone(position, target, up,70);
+			setCameraControlSmartphone(mainCanvas)
+			camera.moveCamera();
+		}
+		
+	}else{
+		camera = new AnimatedCamera();
+	}
+}
