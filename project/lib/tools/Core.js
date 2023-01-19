@@ -143,10 +143,7 @@ export class Core {
 		}
 	}
 
-	/**
-	 * Function that generates the camera for the rendering.
-	 * 
-	 */
+	
 	initCamera() {
 		const position = [-19,8,5], target = [0, 1, 0], up = [0, 1, 0];
 		if(!isSmartphone(this.mainCanvas)){

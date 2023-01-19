@@ -6,20 +6,17 @@ let rotMat = m4.multiply(rotMatX, rotMatZ);
 export class Object{
 	
 	constructor(alias, mesh, offsets,rotate) {
-		// Parametri discriminanti dell'OBJ
-		this.alias = alias; // Nominativo dell'OBJ da renderizzare
 		
-		// Parametri non discriminanti dell'OBJ
-		this.mesh = mesh; // Vettore contenente la posizione dei punti che compongono la mesh dell'OBJ
+		this.alias = alias; 
+		this.mesh = mesh; 
 		this.position = {
-			x: offsets.x, // Posizione del "centro" dell'OBJ rispetto alla coordinata X
-			y: offsets.y, // Posizione del "centro" dell'OBJ rispetto alla coordinata Y
-			z: offsets.z, // Posizione del "centro" dell'OBJ rispetto alla coordinata Z
+			x: offsets.x, 
+			y: offsets.y, 
+			z: offsets.z, 
 		};
 		this.offdeltaY = 0;
-		//console.log(rotate);
 		this.ampWaveLimiter = 0.004;
-		if (rotate){ // Used for world matrix transformation
+		if (rotate){ 
 			let rotMatX = m4.xRotation(0.04);
 			this.rotMat = rotMatX;
 			this.rotate = true;
@@ -64,14 +61,6 @@ export class Object{
 
 	}
 
-	compute_player() {
-		for (let i = 0; i < this.mesh.positions.length; i += 3) {
-			this.mesh.positions[i + 1] += this.playerListener.delta.x;
-				this.mesh.positions[i] += this.playerListener.delta.z;
-		}
-		this.playerListener.delta.x = 0;
-		this.playerListener.delta.z = 0;
-	}
 
 	render(time, gl, light, program, camera, trasparenzaPareti) {
 		
@@ -205,7 +194,7 @@ export class Object{
        
 		// Draw the scene.
 		function drawScene(time, mesh) {
-			 gl.bindTexture(gl.TEXTURE_2D, mesh.mainTexture);
+			gl.bindTexture(gl.TEXTURE_2D, mesh.mainTexture);
 			gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
 
 			let matrix = m4.identity();

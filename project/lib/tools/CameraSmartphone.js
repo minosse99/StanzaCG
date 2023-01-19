@@ -1,7 +1,6 @@
 import { degToRad } from "../utils.js";
 let updateCamera = true;
-// Parametri globali utilizzati all'interno di Camera.js.
-//
+
 let drag;
 let THETA = degToRad(90),
 	PHI = degToRad(50);

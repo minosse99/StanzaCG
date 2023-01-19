@@ -2,9 +2,8 @@
 import { Scene } from "./tools/Scene.js";
 import { Core, initProgramRender, render } from "./tools/Core.js";
 
-import { Camera } from "./tools/Camera.js";
-
 let sceneComposition = new Scene();
+
 sceneComposition.sceneObj.push( {
     alias: "scimmia",
     pathOBJ: "./models/scimmia.obj",

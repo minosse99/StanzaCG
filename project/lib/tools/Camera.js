@@ -2,15 +2,12 @@ import {makeButton,degToRad} from '../utils.js';
 
 let drag;
 
-let THETA = degToRad(270),	//ANGLE X
-	PHI = degToRad(25);		//ANGLE Y
 let old_x, old_y;
 let dX, dY;
 let lookAt = false;
 //
 let animateCamera = false;
-let maxRadius = 360,
-	minRadius = 30;
+
 
 export class Camera {
 
