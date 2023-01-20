@@ -75,11 +75,11 @@
         <br/>
         <h5>Metodi</h5>
         <ul>
-            <li><b>init</b> Principalmente si occupa di inizializzare le variabili </li>
+            <li><b>init</b> Principalmente si occupa di inizializzare le variabili e gli shader</li>
             <li><b>initScene</b> Prendendo un Oggetto che contiene una lista di mesh inizia ad aggiungere gli elementi al meshLoader che si occuperá a sua volta di chiamare la funzione LoadMesh</li>
             <li><b>initCamera</b> Inizializza la camera, controllando che sia uno schermo per PC o per smartphone e settando i vari controlli nel caso</li>
             <li><b>initRender</b> Inizializza il programma di render</li>
-            <li><b>render</b> Avvia la routine di render, renderizzando gli elementi</li>
+            <li><b>render</b> Avvia la routine di render, richiamando per ogni oggetto della scena il metodo 'render'</li>
         </ul>
         <h3 id="camera">Camera</h3>
         In questa sezione osserviamo le 3 possibili camere che vengono utilizzate per la visualizzazione del mondo 3D.
@@ -135,22 +135,22 @@
         <ul>    
             <li><b>computer_position</b> Permette di calcolare la nuova posizione avendo calcolato l'offset(si usa nel caso della rotazione)</li>
             <li><b>compute_idleAnimation</b> Permette di calcolare la rotazione al punto 0,0,0 e la traslazione sull' offset</li>
-            <li><b>compute_player</b> Trasla l'oggetto</li>
             <li><b>render</b></li> Funzione che viene richiamata da Core e permette di renderizzare gli oggetti chiamando a sua volta la sua funzione <b>drawScene</b>
         </ul>
         <h3 id="control">Control</h3>
         In questa sezione parleremo dell'interazione dell'utente con la scena, in particolare dei controlli che permettono di muovere la camera e di interagire con gli oggetti.
         <center><img id="control" src="control.png" width="300" height="400px"/></center>
-        Nella prima parte troviamo la possibilitá di applicare le trasparenze alle pareti in modo da poterci vedere attraverso.
+        Nella prima parte troviamo la possibilitá di applicare le trasparenze alle pareti in modo da poterci vedere attraverso.<br/>
+        Questa funzionalitá é resa possibile andando a modificare l'<i>Alpha</i> degli oggetti che vogiamo rendere trasparenti.
         <center><img id="trasparenze" src="trasparenze.png" width="400px" height="250px"/></center>
         Mentre nella seconda la lista di commandi per interagire con la camera Principale, sempre nel menu troviamo 4 bottoni implementati su un Canvas 2D che ci permette di spostare la camera nelle 4 direzioni.<br/>
         Troviamo un bottone "Animate Camera" che ci permette di cambiare camera(come giá visto in <a href="#camera">Camera</a>) passando ad una animazione.<br/>
         Mentre troviamo anche la possibilitá di cambiare il target della camera, ovvero il punto a cui la camera sta puntando a obiettivi predefiniti come la mesh della scimmia,della tv, del tavolo o del centro(default).<br/>   
         <center><img src="focus.png" width="50%" /></center>
         <h3 id="skybox">Skybox</h3>
-        Attorno alla nostra scena, troviamo uno sfondo che ci permette di vedere dei grattacieli e allo stesso tempo un pavimento, questo sfondo é una Skybox, ovvero una mesh che viene applicata come sfondo della scena.
+        Attorno alla nostra scena, troviamo uno sfondo Skybox, ovvero una mesh che viene applicata come sfondo della scena.
         <center><img src="skybox_city.png" width="50%" /></center>
-        Sono caricate 6 immagini<i>(prepareSkyBox())</i> come texture e costruite in modo da formare una CubeMap, ed infine una volta renderizzati tutti gli elementi della scena dovremmo potere vedere il nostro sfondo 
+        Sono caricate 6 immagini<i>(prepareSkyBox())</i> come texture e costruite in modo da formare una CubeMap, infine una volta renderizzati tutti gli elementi della scena dovremmo potere vedere il nostro sfondo e a seconda di dove andiamo a spostare la visuale della camera, lo skybox si muoverá di conseguenza.
         <h3 id="reference">Referenze</h3>
         Oltre al codice visto a lezione sono state utilizzate le seguenti fonti:
         <ul>
