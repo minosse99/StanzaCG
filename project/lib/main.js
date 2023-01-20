@@ -5,7 +5,7 @@ import { loadJson,isSmartphone } from "./utils.js";
 let sceneComposition = new Scene();
 
 //Load Element to compose the scene from scene.json
-let listElem = await loadJson("./lib/scene.json");
+let listElem = await loadJson("./project/lib/scene.json");
 
 //Init Core
 sceneComposition.addList(listElem);
