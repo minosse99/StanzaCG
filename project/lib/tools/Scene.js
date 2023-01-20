@@ -9,7 +9,7 @@ export class Scene {
 		listofObjects.forEach(elem => {
 			var newObj = {
 				alias: elem.alias,
-				pathOBJ: "./project/models/" + elem.alias +".obj",
+				pathOBJ: "./models/" + elem.alias +".obj",
 				coords: { x: elem.coords.x, y: elem.coords.y , z: elem.coords.z },
 				rotate:  elem.rotate
 			};

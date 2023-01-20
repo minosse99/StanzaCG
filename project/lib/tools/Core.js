@@ -87,27 +87,27 @@ export class Core {
 			const faceInfos = [
 			{
 				target: gl.TEXTURE_CUBE_MAP_POSITIVE_X,
-				url: './project/models/img/posx.jpg',
+				url: './models/img/posx.jpg',
 			},
 			{
 				target: gl.TEXTURE_CUBE_MAP_NEGATIVE_X,
-				url: './project/models/img/negx.jpg',
+				url: './models/img/negx.jpg',
 			},
 			{
 				target: gl.TEXTURE_CUBE_MAP_POSITIVE_Y,
-				url: './project/models/img/posy.jpg',
+				url: './models/img/posy.jpg',
 			},
 			{
 				target: gl.TEXTURE_CUBE_MAP_NEGATIVE_Y,
-				url: './project/models/img/negy.jpg',
+				url: './models/img/negy.jpg',
 			},
 			{
 				target: gl.TEXTURE_CUBE_MAP_POSITIVE_Z,
-				url: './project/models/img/posz.jpg',
+				url: './models/img/posz.jpg',
 			},
 			{
 				target: gl.TEXTURE_CUBE_MAP_NEGATIVE_Z,
-				url: './project/models/img/negz.jpg',
+				url: './models/img/negz.jpg',
 			},
 			];
 			faceInfos.forEach((faceInfo) => {
