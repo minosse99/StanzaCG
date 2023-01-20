@@ -17,7 +17,7 @@ export class AnimatedCamera extends Camera{
 		return radius * Math.cos(this.PHI);
 	}
 
-    #move(){
+    move(){
         if (this.THETA > degToRad(180)) this.THETA += 0.001;  
 		if (this.THETA < degToRad(180)) this.THETA -= 0.001;
 		if (this.PHI > degToRad(45)) this.PHI -= 0.001; 
@@ -28,17 +28,8 @@ export class AnimatedCamera extends Camera{
         this.position[2] = Math.cos(this.THETA) * this.radiusModify(this.radius) ;
     }
 
-
-    getViewMatrix() {
-        this.#move();
-
-        const look = [0,0,1] // the camera is always looking at the same point
-        const cameraMatrix = m4.lookAt(this.position, look, [0,1,0]);
-        return m4.inverse(cameraMatrix); // ViewMatrix
-    }
-
     viewMatrix() {
-        this.#move();
+        this.move();
         const look = [0,0,1] ;
 		let cameraMatrix= m4.lookAt(this.position, look, this.up);
         return m4.inverse(cameraMatrix); // ViewMatrix
